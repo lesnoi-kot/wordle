@@ -1,13 +1,22 @@
 import { useState } from 'react';
 
-import './App.css';
-import { Keyboard } from './components/Keyboard/Keyboard';
+import { Introduction } from './components/Introduction/Introduction';
+import { Game } from './components/Game/Game';
 
 function App() {
+  const [gameStarted, setGameStarted] = useState(false);
+
   return (
     <>
-      <h1>Wordle</h1>
-      <Keyboard></Keyboard>
+      {!gameStarted && (
+        <Introduction
+          onStart={() => {
+            setGameStarted(true);
+          }}
+        />
+      )}
+
+      {gameStarted && <Game />}
     </>
   );
 }

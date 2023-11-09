@@ -1,5 +1,7 @@
 import { Injectable, Module, Controller, Get, Query } from '@nestjs/common';
 
+import { CheckWordResult } from 'wordle-common';
+
 type WordHandle = number;
 
 @Injectable()
