@@ -8,6 +8,7 @@
     "frontend:dev": "yarn workspace wordle-frontend dev",
     "backend:build": "yarn workspace wordle-backend build",
     "backend:dev": "yarn workspace wordle-backend start:dev",
+    "common:build": "yarn workspace wordle-common run tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{js,ts,tsx}\""
   },

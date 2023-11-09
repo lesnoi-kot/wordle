@@ -8,14 +8,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "clsx": "^2.0.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "wordle-common": "workspace:^"
   },
   "devDependencies": {
+    "@types/lodash": "^4",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
     "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2",
     "vite": "^4.5.0"
   }
 }
