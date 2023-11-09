@@ -1539,6 +1539,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.14.201
+  resolution: "@types/lodash@npm:4.14.201"
+  checksum: 14dc43787296c429433d7d034ed47c5ac24b92217056f80a0e6c990449120b9c9c1058918188945fb88353c0c8333c5c36dccc40c51edbd39b05d2169ab2e0ad
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.3
   resolution: "@types/mime@npm:3.0.3"
@@ -2762,6 +2769,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 2176952b3649293473999a95d7bebfc9dc96410f6cbd3d2595cf12fd401f63a4bf41a7adbfd3ab2ff09ed60cb9870c58c6acdd18b87767366fabfc163700f13b
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "clsx@npm:2.0.0"
+  checksum: c09f43b3144a0b7826b6b11b6a111b2c7440831004eecc02d333533c5e58ef0aa5f2dce071d3b25fbb8c8ea97b45df96c74bcc1d51c8c2027eb981931107b0cd
   languageName: node
   linkType: hard
 
@@ -8032,8 +8046,17 @@ __metadata:
     ts-jest: "npm:^29.1.0"
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.2.0"
+    wordle-common: "workspace:^"
   peerDependencies:
     typescript: ^5.2.2
+  languageName: unknown
+  linkType: soft
+
+"wordle-common@workspace:^, wordle-common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "wordle-common@workspace:packages/common"
+  dependencies:
+    typescript: "npm:^5.2.2"
   languageName: unknown
   linkType: soft
 
@@ -8041,13 +8064,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "wordle-frontend@workspace:packages/frontend"
   dependencies:
+    "@types/lodash": "npm:^4"
     "@types/react": "npm:^18.2.15"
     "@types/react-dom": "npm:^18.2.7"
     "@vitejs/plugin-react": "npm:^4.0.3"
+    clsx: "npm:^2.0.0"
+    lodash: "npm:^4.17.21"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     tailwindcss: "npm:^3.3.5"
+    typescript: "npm:^5.2.2"
     vite: "npm:^4.5.0"
+    wordle-common: "workspace:^"
   languageName: unknown
   linkType: soft
 
