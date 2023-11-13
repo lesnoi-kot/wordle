@@ -1,35 +1,20 @@
-import {
-  ComponentPropsWithoutRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { times } from 'lodash';
 import {
+  CheckWordDTO,
+  GameId,
+  LettersMap,
   LettersMatches,
   MatchType,
   WORDS_COUNT,
   WORD_LENGTH,
 } from 'wordle-common';
 
-import { Word } from '../Word/Word';
-
 export const useKeyboardInputEffect = (
   onLetterInput: (letter: string) => void,
 ) => {
   useEffect(() => {
     function onKeyUp(event: KeyboardEvent) {
-      // console.log(event);
-
-      if (
-        event.target &&
-        'tagName' in event.target &&
-        event.target.tagName === 'BUTTON'
-      ) {
-        event.preventDefault();
-      }
-
       if (event.key === 'Enter') {
         onLetterInput('\n');
         return;
@@ -55,57 +40,85 @@ export const useKeyboardInputEffect = (
   }, [onLetterInput]);
 };
 
-type WordProp = ComponentPropsWithoutRef<typeof Word>['word'];
-
-const DEFAULT_WORDS_STATE = times(WORDS_COUNT, () => '');
-
-const zipWord = (word: string, letters: LettersMatches): WordProp => {
-  return times(WORD_LENGTH, (i) => ({
-    letter: word[i] ?? '',
-    match: letters[word[i]],
-  }));
+type WordRowState = {
+  word: string;
+  matches?: LettersMatches;
 };
 
-export const useWordsState = () => {
-  const [row, setRow] = useState(0);
-  const [words, setWords] = useState(DEFAULT_WORDS_STATE);
-  const [letters, setLetters] = useState<LettersMatches>({});
+const DEFAULT_WORDS_STATE = [{ word: '' }];
+const FULL_MATCH = times(WORD_LENGTH, () => MatchType.Exact) as LettersMatches;
 
-  const setCurrentWord = useCallback(
-    (word: string) => {
-      setWords((words) => words.with(row, word.substring(0, WORD_LENGTH)));
+export const useWordsState = (gameId: GameId) => {
+  const [words, setWords] = useState<WordRowState[]>(DEFAULT_WORDS_STATE);
+  const [letters, setLetters] = useState<LettersMap>({});
+  const [correctWord, setCorrectWord] = useState('');
+  const [isFinished, setIsFinished] = useState(false);
+
+  const currentWord = isFinished ? '' : words.at(-1)!.word;
+
+  const setCurrentWord = useCallback((word: string) => {
+    setWords((words) =>
+      words.with(-1, { word: word.substring(0, WORD_LENGTH) }),
+    );
+  }, []);
+
+  const onWordAccepted = useCallback(
+    (guessWord: string, checkResult: CheckWordDTO) => {
+      if (!checkResult.isValid) {
+        return;
+      }
+
+      setLetters((letters) => {
+        const newLetters = { ...letters };
+
+        checkResult.matches.forEach((match, i) => {
+          if (guessWord[i]) {
+            newLetters[guessWord[i]] = Math.max(
+              newLetters[guessWord[i]] ?? MatchType.None,
+              match,
+            );
+          }
+        });
+
+        return newLetters;
+      });
+
+      setWords((words) =>
+        words
+          .with(-1, { word: guessWord, matches: checkResult.matches })
+          .concat({ word: '' }),
+      );
+
+      if (checkResult.finished) {
+        setIsFinished(true);
+        setCorrectWord(checkResult.word);
+      }
     },
-    [row],
+    [],
   );
 
-  const onWordAccepted = useCallback((matches: LettersMatches) => {
-    setLetters((letters) => ({ ...letters, ...matches }));
-    setRow((row) => row + 1);
+  const onWordReveal = useCallback((word: string) => {
+    setWords((words) => words.with(-1, { word, matches: FULL_MATCH }));
+    setIsFinished(true);
+    setCorrectWord(word);
   }, []);
 
-  const resetState = useCallback(() => {
-    setRow(0);
+  useEffect(() => {
     setWords(DEFAULT_WORDS_STATE);
+    setCorrectWord('');
     setLetters({});
-  }, []);
-
-  const wordProps = useMemo(
-    (): WordProp[] =>
-      words
-        .map((word) => zipWord(word, letters))
-        .with(row, zipWord(words[row], {})),
-    [row, words, letters],
-  );
+    setIsFinished(false);
+  }, [gameId]);
 
   return {
-    row,
-    words: wordProps,
+    words,
     letters,
+    currentWord,
+    correctWord,
     setCurrentWord,
-    resetState,
     onWordAccepted,
-    currentWord: words[row],
-    rowIsFilled: words[row].length === WORD_LENGTH,
-    isFinished: row === WORDS_COUNT,
+    onWordReveal,
+    rowIsFilled: currentWord.length === WORD_LENGTH,
+    isFinished,
   };
 };

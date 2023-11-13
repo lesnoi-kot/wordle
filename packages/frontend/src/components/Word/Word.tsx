@@ -1,20 +1,20 @@
 import { memo } from 'react';
+import { LettersMatches, WORD_LENGTH } from 'wordle-common';
+
 import { Letter } from './Letter';
-import { MatchType } from 'wordle-common';
+import { times } from 'lodash';
 
 type Props = {
   id: string;
-  word: Array<{
-    letter: string;
-    match?: MatchType;
-  }>;
+  word: string;
+  matches?: LettersMatches;
 };
 
-export const Word = memo(({ id, word }: Props) => {
+export const Word = memo(({ id, word, matches }: Props) => {
   return (
     <div id={id} className="flex flex-row gap-2 justify-center">
-      {word.map(({ letter, match }, i) => (
-        <Letter key={i} value={letter} match={match} />
+      {times(WORD_LENGTH, (i) => (
+        <Letter key={i} value={word[i] ?? ''} match={matches?.[i]} />
       ))}
     </div>
   );

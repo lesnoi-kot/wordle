@@ -1,12 +1,16 @@
-import { CheckWordResult, MatchType } from 'wordle-common';
+import { CheckWordDTO, GameId, NewGameDTO, RevealWordDTO } from 'wordle-common';
 
 type APIOptions = {
   baseUrl: string;
 };
 
 type CheckWordOptions = {
-  wordHandle: number;
+  gameId: GameId;
   guessWord: string;
+};
+
+type RevealWordOptions = {
+  gameId: GameId;
 };
 
 class API {
@@ -16,51 +20,30 @@ class API {
     this.baseUrl = baseUrl;
   }
 
-  async getRandomWordHandle(): Promise<number> {
-    return 0;
+  async getRandomWordHandle(): Promise<NewGameDTO> {
+    const url = new URL('/words/random', this.baseUrl);
+    const resp = await fetch(url);
+    return (await resp.json()) as NewGameDTO;
   }
 
-  async checkWord(options: CheckWordOptions): Promise<CheckWordResult> {
-    if (options.guessWord === 'уголь') {
-      return {
-        isValid: true,
-        matches: {
-          у: MatchType.None,
-          г: MatchType.Partial,
-          о: MatchType.None,
-          л: MatchType.Exact,
-          ь: MatchType.Exact,
-        },
-      };
-    }
+  async checkWord(options: CheckWordOptions): Promise<CheckWordDTO> {
+    const url = new URL('/words/check', this.baseUrl);
+    url.searchParams.append('gameId', String(options.gameId));
+    url.searchParams.append('word', options.guessWord);
 
-    if (options.guessWord === 'обувь') {
-      return {
-        isValid: true,
-        matches: {
-          о: MatchType.None,
-          б: MatchType.Partial,
-          у: MatchType.None,
-          в: MatchType.Partial,
-          ь: MatchType.None,
-        },
-      };
-    }
+    const resp = await fetch(url);
+    const body = (await resp.json()) as CheckWordDTO;
+    return body;
+  }
 
-    if (options.guessWord === 'берег') {
-      return {
-        isValid: true,
-        matches: {
-          б: MatchType.Partial,
-          е: MatchType.None,
-          р: MatchType.None,
-          г: MatchType.Partial,
-        },
-      };
-    }
+  async revealWord(options: RevealWordOptions): Promise<RevealWordDTO> {
+    const url = new URL('/words/reveal', this.baseUrl);
+    url.searchParams.append('gameId', String(options.gameId));
 
-    return { isValid: false };
+    const resp = await fetch(url, { method: 'POST' });
+    const body = (await resp.json()) as RevealWordDTO;
+    return body;
   }
 }
 
-export const api = new API({ baseUrl: '' });
+export const api = new API({ baseUrl: 'http://localhost:3000' });

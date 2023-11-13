@@ -1,10 +1,10 @@
-import { LettersMatches } from 'wordle-common';
+import { LettersMap } from 'wordle-common';
 
 import { KeyButton } from './KeyButton';
 
 type Props = {
   onKeyPress(key: string): void;
-  letters: LettersMatches;
+  letters: LettersMap;
 };
 
 const KEYBOARD_LAYOUT = ['йцукенгшщзхъ', 'фывапролджэ', '\nячсмитьбю\b'].map(

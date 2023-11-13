@@ -27,7 +27,11 @@ export function KeyButton({ char, match, ...props }: Props) {
   );
 
   return (
-    <button className={`p-4 ${textStyling} ${bgStyling} rounded`} {...props}>
+    <button
+      className={`p-4 ${textStyling} ${bgStyling} rounded`}
+      tabIndex={-1}
+      {...props}
+    >
       {content}
     </button>
   );

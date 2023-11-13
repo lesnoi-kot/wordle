@@ -1,34 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
+import { WORDS_COUNT } from 'wordle-common';
+import { times } from 'lodash';
 
 import { api } from '../../services/api';
 import { useKeyboardInputEffect, useWordsState } from './hooks';
+import { shakeElement } from './animations';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { Word } from '../Word/Word';
-import { shakeElement } from './animations';
+import { Button } from '../Button';
 
 export function Game() {
-  const [wordHandle, setWordHandle] = useState(0);
+  const [gameId, setGameId] = useState(0);
   const {
-    row,
     words,
     letters,
     rowIsFilled,
     isFinished,
     currentWord,
+    correctWord,
     setCurrentWord,
-    resetState,
     onWordAccepted,
-  } = useWordsState();
+    onWordReveal,
+  } = useWordsState(gameId);
 
   const startNewGame = useCallback(() => {
-    api.getRandomWordHandle().then((wordHandle) => {
-      setWordHandle(wordHandle);
+    api.getRandomWordHandle().then(({ gameId }) => {
+      setGameId(gameId);
     });
   }, []);
-
-  useEffect(() => {
-    resetState();
-  }, [wordHandle]);
 
   useEffect(() => {
     startNewGame();
@@ -47,12 +46,12 @@ export function Game() {
           }
 
           api
-            .checkWord({ wordHandle, guessWord: currentWord })
+            .checkWord({ gameId, guessWord: currentWord })
             .then((result) => {
               if (result.isValid) {
-                onWordAccepted(result.matches);
+                onWordAccepted(currentWord, result);
               } else {
-                shakeElement(document.getElementById(getRowId(row)));
+                // shakeElement(document.getElementById(getRowId(0)));
               }
             })
             .catch(console.error);
@@ -67,16 +66,65 @@ export function Game() {
           break;
       }
     },
-    [wordHandle, currentWord, rowIsFilled, row, setCurrentWord, onWordAccepted],
+    [
+      gameId,
+      currentWord,
+      rowIsFilled,
+      setCurrentWord,
+      onWordAccepted,
+      isFinished,
+    ],
   );
 
   useKeyboardInputEffect(onLetterInput);
 
   return (
     <div className="flex flex-col gap-8">
+      {isFinished && (
+        <dialog open>
+          <div>
+            <p>Game Over!</p>
+            <p>Correct word is "{correctWord}".</p>
+          </div>
+        </dialog>
+      )}
+
+      <div className="flex flex-row gap-4">
+        <Button
+          onClick={() => {
+            startNewGame();
+          }}
+          primary={isFinished}
+        >
+          Новая игра
+        </Button>
+        <Button
+          disabled={isFinished}
+          onClick={() => {
+            if (isFinished) {
+              return;
+            }
+
+            api
+              .revealWord({ gameId })
+              .then(({ word }) => {
+                onWordReveal(word);
+              })
+              .catch(console.error);
+          }}
+        >
+          Сдаюсь
+        </Button>
+      </div>
+
       <div className="flex flex-col gap-2">
-        {words.map((word, i) => (
-          <Word key={i} id={getRowId(i)} word={word} />
+        {times(WORDS_COUNT, (i) => (
+          <Word
+            key={i}
+            id={getRowId(i)}
+            word={words[i]?.word ?? ''}
+            matches={words[i]?.matches}
+          />
         ))}
       </div>
 
