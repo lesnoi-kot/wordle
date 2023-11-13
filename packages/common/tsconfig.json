@@ -2,12 +2,20 @@
   "extends": "../../tsconfig.json",
 
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
+    "outDir": "./dist/esm",
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "baseUrl": "./src",
+
+    "declarationDir": "./dist/types",
     "declaration": true,
     "noEmit": false,
+    "declarationMap": true
+  },
 
-    "outDir": "./dist",
-    "baseUrl": "./src",
-  }
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

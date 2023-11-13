@@ -4,13 +4,16 @@
   "private": true,
   "type": "module",
   "packageManager": "yarn@4.0.0",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "common:build:esm": "tsc --project tsconfig.json",
+    "common:build:cjs": "tsc --project tsconfig.cjs.json",
+    "common:build:all": "yarn common:build:esm && yarn common:build:cjs"
   },
   "devDependencies": {
     "typescript": "^5.2.2"

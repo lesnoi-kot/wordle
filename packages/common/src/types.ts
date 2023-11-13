@@ -1,14 +1,27 @@
 import { MatchType } from './enums';
 
-export type GetRandomWordHandleResult = {
-  wordHandle: number;
+export type GameId = number;
+
+export type LettersMap = Record<string, MatchType>;
+export type LettersMatches = [
+  MatchType,
+  MatchType,
+  MatchType,
+  MatchType,
+  MatchType,
+];
+
+export type CheckWordDTO =
+  | { isValid: false }
+  | ({ isValid: true; matches: LettersMatches } & (
+      | { finished: true; word: string }
+      | { finished: false }
+    ));
+
+export type NewGameDTO = {
+  gameId: GameId;
 };
 
-export type LettersMatches = Record<string, MatchType>;
-
-export type CheckWordResult =
-  | {
-      isValid: true;
-      matches: LettersMatches;
-    }
-  | { isValid: false };
+export type RevealWordDTO = {
+  word: string;
+};
