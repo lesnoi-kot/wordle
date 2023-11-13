@@ -1,0 +1,10 @@
+CREATE TABLE words (
+  id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  word char(5) NOT NULL
+);
+
+CREATE TABLE games (
+  id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  word_id int REFERENCES words(id) ON DELETE CASCADE,
+  attempts int NOT NULL DEFAULT 0
+);
