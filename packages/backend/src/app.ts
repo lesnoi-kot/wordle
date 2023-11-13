@@ -1,41 +1,18 @@
-import { Injectable, Module, Controller, Get, Query } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { CheckWordResult } from 'wordle-common';
-
-type WordHandle = number;
-
-@Injectable()
-export class WordleService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-
-  selectWord(): WordHandle {
-    return 0;
-  }
-}
-
-@Controller('/words')
-export class WordleController {
-  constructor(private readonly appService: WordleService) {}
-
-  @Get('/random')
-  getRandomWordHandle() {
-    return {
-      wordHandle: 0,
-    };
-  }
-
-  @Get('/check')
-  checkWord() {
-    //
-    return '';
-  }
-}
+import { WordleModule } from './wordle/wordle.module.js';
+import { WordEntity, WordsCountEntity } from './entities/word.entity.js';
+import { GameEntity } from './entities/game.entity.js';
 
 @Module({
-  imports: [],
-  controllers: [WordleController],
-  providers: [WordleService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: 'postgresql://wordle:wordle@localhost/wordle?application_name=wordle',
+      entities: [WordEntity, GameEntity, WordsCountEntity],
+    }),
+    WordleModule,
+  ],
 })
 export class AppModule {}

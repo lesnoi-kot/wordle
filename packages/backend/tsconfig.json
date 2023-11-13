@@ -3,15 +3,18 @@
 
   "compilerOptions": {
     "target": "ESNext",
-    "module": "commonjs",
-    "declaration": true,
+    "module": "NodeNext",
+    "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "noEmit": false,
     "incremental": true,
+    "strictPropertyInitialization": false,
 
     "outDir": "./dist",
     "baseUrl": "./",
-  }
+  },
+
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
