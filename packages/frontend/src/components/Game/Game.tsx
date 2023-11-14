@@ -7,7 +7,7 @@ import { useKeyboardInputEffect, useWordsState } from './hooks';
 import { shakeElement } from './animations';
 import { Keyboard } from '../Keyboard/Keyboard';
 import { Word } from '../Word/Word';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 
 export function Game() {
   const [gameId, setGameId] = useState(0);
@@ -90,31 +90,32 @@ export function Game() {
       )}
 
       <div className="flex flex-row gap-4">
-        <Button
-          onClick={() => {
-            startNewGame();
-          }}
-          primary={isFinished}
-        >
-          Новая игра
-        </Button>
-        <Button
-          disabled={isFinished}
-          onClick={() => {
-            if (isFinished) {
-              return;
-            }
+        {isFinished && (
+          <Button
+            onClick={() => {
+              startNewGame();
+            }}
+            primary={isFinished}
+          >
+            Новая игра
+          </Button>
+        )}
 
-            api
-              .revealWord({ gameId })
-              .then(({ word }) => {
-                onWordReveal(word);
-              })
-              .catch(console.error);
-          }}
-        >
-          Сдаюсь
-        </Button>
+        {!isFinished && (
+          <Button
+            disabled={isFinished}
+            onClick={() => {
+              api
+                .revealWord({ gameId })
+                .then(({ word }) => {
+                  onWordReveal(word);
+                })
+                .catch(console.error);
+            }}
+          >
+            Сдаюсь
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">

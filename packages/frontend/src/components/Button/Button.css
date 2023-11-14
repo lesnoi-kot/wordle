@@ -1,0 +1,37 @@
+@tailwind components;
+
+@layer components {
+  .btn {
+    @apply text-slate-100 bg-zinc-900 cursor-pointer;
+  }
+
+  .btn:enabled:hover {
+    @apply bg-slate-800;
+  }
+
+  .btn:enabled:active {
+    @apply bg-slate-700;
+  }
+
+  .btn:disabled {
+    @apply text-zinc-500;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .btn {
+    @apply text-zinc-900 bg-slate-50;
+  }
+
+  .btn:enabled:hover {
+    @apply bg-slate-100;
+  }
+
+  .btn:enabled:active {
+    @apply bg-slate-200;
+  }
+
+  .btn:disabled {
+    @apply text-zinc-500;
+  }
+}

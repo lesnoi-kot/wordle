@@ -1,4 +1,4 @@
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import iconSVG from '../../assets/wordle-icon.svg';
 
 type Props = {
