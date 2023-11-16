@@ -14,7 +14,7 @@ export type LettersMatches = [
 export type CheckWordDTO =
   | { isValid: false }
   | ({ isValid: true; matches: LettersMatches } & (
-      | { finished: true; word: string }
+      | { finished: true; word: string; attempts: number }
       | { finished: false }
     ));
 

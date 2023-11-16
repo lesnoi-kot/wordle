@@ -53,7 +53,13 @@ export class WordleService {
     const matches = compareWords(guessWord, secretWord);
 
     if (game.attempts >= WORDS_COUNT || isWordFullyMatched(matches)) {
-      return { isValid: true, matches, finished: true, word: secretWord };
+      return {
+        isValid: true,
+        matches,
+        finished: true,
+        word: secretWord,
+        attempts: game.attempts,
+      };
     }
 
     return { isValid: true, matches, finished: false };

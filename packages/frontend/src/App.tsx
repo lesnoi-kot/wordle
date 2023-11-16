@@ -2,22 +2,29 @@ import { useState } from 'react';
 
 import { Introduction } from './components/Introduction/Introduction';
 import { Game } from './components/Game/Game';
+import { Toasts } from './components/Toasts/Toasts';
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
 
-  return (
-    <>
-      {!gameStarted && (
-        <Introduction
-          onStart={() => {
-            setGameStarted(true);
-          }}
-        />
-      )}
+  if (!gameStarted) {
+    return (
+      <Introduction
+        onStart={() => {
+          setGameStarted(true);
+        }}
+      />
+    );
+  }
 
-      {gameStarted && <Game />}
-    </>
+  return (
+    <div className="max-w-5xl mx-auto relative">
+      <Game />
+
+      <div className="absolute right-0 top-0 mr-4 mt-[6rem]">
+        <Toasts />
+      </div>
+    </div>
   );
 }
 
