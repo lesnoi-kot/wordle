@@ -42,7 +42,7 @@ export function Letter({ value, match }: Props) {
   return (
     <div
       id={id}
-      className={`w-[60px] text-[2rem] font-bold uppercase flex items-center justify-center aspect-square ${border} ${highlight}`}
+      className={`w-[60px] text-[2rem] font-bold uppercase flex items-center justify-center aspect-square select-none ${border} ${highlight}`}
     >
       {value}
     </div>

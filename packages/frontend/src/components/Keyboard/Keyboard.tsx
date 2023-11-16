@@ -21,7 +21,7 @@ export function Keyboard({ onKeyPress, letters }: Props) {
               key={key}
               match={letters[key]}
               char={key}
-              onClick={() => onKeyPress(key)}
+              onClick={onKeyPress}
             />
           ))}
         </div>

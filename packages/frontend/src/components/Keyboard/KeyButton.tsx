@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { MatchType } from 'wordle-common';
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = {
   char: string;
   match: MatchType;
+  onClick(key: string): void;
 };
 
 const matchTypeToColor = {
@@ -12,7 +13,7 @@ const matchTypeToColor = {
   [MatchType.Exact]: 'bg-[#6aaa64]',
 };
 
-export function KeyButton({ char, match, ...props }: Props) {
+export function KeyButton({ char, match, onClick }: Props) {
   const content =
     char === '\b' ? <BackspaceIcon /> : char === '\n' ? 'enter' : char;
 
@@ -28,9 +29,10 @@ export function KeyButton({ char, match, ...props }: Props) {
 
   return (
     <button
-      className={`p-4 ${textStyling} ${bgStyling} rounded`}
-      tabIndex={-1}
-      {...props}
+      className={`p-4 ${textStyling} ${bgStyling} rounded select-none`}
+      onClick={() => {
+        onClick(char);
+      }}
     >
       {content}
     </button>

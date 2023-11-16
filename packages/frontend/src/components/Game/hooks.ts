@@ -10,6 +10,9 @@ import {
   WORD_LENGTH,
 } from 'wordle-common';
 
+import { useAddToast } from '../Toasts/ToastsProvider';
+import { api } from '../../services/api';
+
 export const useKeyboardInputEffect = (
   onLetterInput: (letter: string) => void,
 ) => {
@@ -48,13 +51,28 @@ type WordRowState = {
 const DEFAULT_WORDS_STATE = [{ word: '' }];
 const FULL_MATCH = times(WORD_LENGTH, () => MatchType.Exact) as LettersMatches;
 
-export const useWordsState = (gameId: GameId) => {
+export const useGameState = () => {
+  const addToast = useAddToast();
+  const [gameId, setGameId] = useState(0);
   const [words, setWords] = useState<WordRowState[]>(DEFAULT_WORDS_STATE);
   const [letters, setLetters] = useState<LettersMap>({});
   const [correctWord, setCorrectWord] = useState('');
   const [isFinished, setIsFinished] = useState(false);
+  const [isResigned, setIsResigned] = useState(false);
+  const [attempts, setAttempts] = useState(0);
 
   const currentWord = isFinished ? '' : words.at(-1)!.word;
+
+  const startNewGame = useCallback(() => {
+    api
+      .getRandomWordHandle()
+      .then(({ gameId }) => {
+        setGameId(gameId);
+      })
+      .catch((error) => {
+        addToast({ text: `Ошибка сети (${String(error)})` });
+      });
+  }, []);
 
   const setCurrentWord = useCallback((word: string) => {
     setWords((words) =>
@@ -90,6 +108,7 @@ export const useWordsState = (gameId: GameId) => {
       );
 
       if (checkResult.finished) {
+        setAttempts(checkResult.attempts);
         setIsFinished(true);
         setCorrectWord(checkResult.word);
       }
@@ -101,24 +120,33 @@ export const useWordsState = (gameId: GameId) => {
     setWords((words) => words.with(-1, { word, matches: FULL_MATCH }));
     setIsFinished(true);
     setCorrectWord(word);
+    setIsResigned(true);
   }, []);
 
   useEffect(() => {
     setWords(DEFAULT_WORDS_STATE);
     setCorrectWord('');
     setLetters({});
+    setIsResigned(false);
     setIsFinished(false);
+    setAttempts(0);
   }, [gameId]);
 
   return {
+    gameId,
     words,
     letters,
     currentWord,
     correctWord,
+    attempts,
+    isResigned,
+    rowIsFilled: currentWord.length === WORD_LENGTH,
+    isFinished,
+    startNewGame,
     setCurrentWord,
     onWordAccepted,
     onWordReveal,
-    rowIsFilled: currentWord.length === WORD_LENGTH,
-    isFinished,
   };
 };
+
+export type GameState = ReturnType<typeof useGameState>;
