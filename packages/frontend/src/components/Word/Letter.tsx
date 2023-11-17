@@ -1,9 +1,11 @@
 import clsx from 'clsx';
-import { useEffect, useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { MatchType } from 'wordle-common';
-import { pluckElement } from './animations';
+
+import { pluckElement, flipElement } from './animations';
 
 type Props = {
+  order: number;
   value: string;
   match?: MatchType;
 };
@@ -14,25 +16,36 @@ const matchTypeToColor = {
   [MatchType.Exact]: 'bg-[#6aaa64]',
 };
 
-export function Letter({ value, match }: Props) {
+const FLIP_ANIMATION_DELAY = 100;
+
+export function Letter({ order, value, match }: Props) {
   const id = useId();
-
-  useEffect(() => {
-    if (value) {
-      pluckElement(document.getElementById(id));
-    }
-  }, [value]);
-
+  const [showMatchStyle, setShowMatchStyle] = useState(false);
   const hasMatchInfo = match !== undefined;
 
+  useEffect(() => {
+    if (value && !hasMatchInfo) {
+      pluckElement(document.getElementById(id));
+    } else if (value && hasMatchInfo) {
+      flipElement(document.getElementById(id), {
+        delay: order * FLIP_ANIMATION_DELAY,
+        afterFlipIn() {
+          setShowMatchStyle(true);
+        },
+      });
+    } else if (!hasMatchInfo) {
+      setShowMatchStyle(false);
+    }
+  }, [value, hasMatchInfo, order]);
+
   const highlight = clsx(
-    hasMatchInfo && 'text-white',
-    hasMatchInfo && matchTypeToColor[match],
+    showMatchStyle && hasMatchInfo && 'text-white',
+    showMatchStyle && hasMatchInfo && matchTypeToColor[match],
   );
 
   const border = clsx(
     'border-2',
-    hasMatchInfo
+    showMatchStyle && hasMatchInfo
       ? 'border-transparent'
       : value
       ? 'border-[#878a8c] dark:border-[#565758]'
