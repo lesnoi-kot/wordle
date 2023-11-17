@@ -12,9 +12,9 @@ type Props = {
 
 export const Word = memo(({ id, word, matches }: Props) => {
   return (
-    <div id={id} className="flex flex-row gap-2 justify-center">
+    <div id={id} className="flex flex-row gap-1 md:gap-2 justify-center">
       {times(WORD_LENGTH, (i) => (
-        <Letter key={i} value={word[i] ?? ''} match={matches?.[i]} />
+        <Letter key={i} order={i} value={word[i] ?? ''} match={matches?.[i]} />
       ))}
     </div>
   );

@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { ComponentPropsWithRef, useEffect, useRef } from 'react';
-import { times } from 'lodash';
+import { ComponentPropsWithRef } from 'react';
 import { WORDS_COUNT } from 'wordle-common';
 
 import { Dialog } from '../Dialog';
@@ -10,6 +9,7 @@ type Props = ComponentPropsWithRef<typeof Dialog> & {
   attempts: number;
   correctWord: string;
   isResigned: boolean;
+  isVictory: boolean;
   startNewGame(): void;
 };
 
@@ -17,26 +17,30 @@ export function CongratsDialog({
   open,
   attempts,
   isResigned,
+  isVictory,
   correctWord,
   startNewGame,
 }: Props) {
   return (
-    <Dialog open={open} className="">
+    <Dialog
+      open={open}
+      className="animate-delay-[1000ms] animate-fade-down animate-once w-3/4"
+    >
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row-reverse justify-end gap-2">
-          {times(WORDS_COUNT, (i) => (
-            <Star key={i} gold={!isResigned && i >= attempts - 1} />
-          ))}
+        <div className="flex flex-row gap-2">
+          <Star gold={isVictory && attempts <= WORDS_COUNT} />
+          <Star gold={isVictory && attempts <= 5} />
+          <Star gold={isVictory && attempts <= 3} />
         </div>
-        <h3 className="text-2xl bold">
-          {isResigned ? 'Бывает...' : getCongratsText(attempts)}
+        <h3 className="text-xl sm:text-2xl bold">
+          {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз!'}
         </h3>
-        <p className="text-lg">
+        <p className="sm:text-lg">
           Правильное слово было <b>"{correctWord}"</b>.
         </p>
 
         <Button
-          className="mt-8"
+          className="mt-8 self-end"
           onClick={() => {
             startNewGame();
           }}
@@ -50,15 +54,15 @@ export function CongratsDialog({
 }
 
 function getCongratsText(attempts: number) {
+  if (attempts === 1) {
+    return 'Невероятная удача!';
+  }
+
   if (attempts <= 3) {
     return 'Супер!';
   }
 
-  if (attempts <= WORDS_COUNT) {
-    return 'Хороший результат!';
-  }
-
-  return 'Попробуй еще раз!';
+  return 'Хороший результат!';
 }
 
 function Star({ gold }: { gold: boolean }) {
@@ -70,6 +74,7 @@ function Star({ gold }: { gold: boolean }) {
       viewBox="0 0 50 50"
       width="30px"
       height="30px"
+      className={gold ? 'animate-jump animate-once' : ''}
     >
       <path
         className={clsx(gold ? 'fill-[gold]' : 'fill-[lightgray]')}

@@ -10,7 +10,7 @@ export const Dialog = forwardRef(
       <dialog
         ref={ref}
         className={clsx(
-          'p-4 rounded-md shadow-xl max-w-md backdrop-opacity-60 backdrop:bg-gray-100 border',
+          'p-4 rounded-md shadow-xl max-w-md backdrop-opacity-60 backdrop:bg-gray-100 border z-10',
           className,
         )}
         {...props}

@@ -20,7 +20,7 @@ export function KeyButton({ char, match, onClick }: Props) {
   const textStyling = clsx(
     'text-black dark:text-white uppercase font-bold',
     match !== undefined && 'text-white',
-    char === '\n' ? 'text-xs' : 'text-xl',
+    char === '\n' ? 'text-xs' : 'text-sm sm:text-xl',
   );
 
   const bgStyling = clsx(
@@ -29,7 +29,7 @@ export function KeyButton({ char, match, onClick }: Props) {
 
   return (
     <button
-      className={`p-4 ${textStyling} ${bgStyling} rounded select-none`}
+      className={`p-2 sm:p-4 ${textStyling} ${bgStyling} rounded select-none transition-colors`}
       onClick={() => {
         onClick(char);
       }}

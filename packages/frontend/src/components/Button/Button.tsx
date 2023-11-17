@@ -11,7 +11,7 @@ export function Button({ primary, className = '', ...props }: Props) {
 
   return (
     <button
-      className={`btn py-4 px-8 rounded-lg border border-transparent transition-colors ${extraStyles}`}
+      className={`btn p-2 md:py-4 md:px-8 rounded-lg border border-transparent transition-colors ${extraStyles}`}
       {...props}
     />
   );
