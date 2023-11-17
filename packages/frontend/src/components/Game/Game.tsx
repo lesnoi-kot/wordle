@@ -1,23 +1,27 @@
-import { useCallback, useEffect, useState } from 'react';
-import { GameId, WORDS_COUNT } from 'wordle-common';
+import { useCallback, useEffect } from 'react';
+import { WORDS_COUNT } from 'wordle-common';
 import { times } from 'lodash';
 
 import { api } from '../../services/api';
-import { useKeyboardInputEffect, useGameState, GameState } from './hooks';
+import { useKeyboardInputEffect } from './useKeyboardInputEffect';
 import { shakeElement } from './animations';
+import { useGameState } from './useGameState';
+
 import { Keyboard } from '../Keyboard/Keyboard';
 import { Word } from '../Word/Word';
-import { Button } from '../Button/Button';
 import { useAddToast } from '../Toasts/ToastsProvider';
 import { CongratsDialog } from './CongratsDialog';
+import { Header } from './Header';
 
 export function Game() {
   const {
     gameId,
     words,
     letters,
+    row,
     rowIsFilled,
     isFinished,
+    isVictory,
     isResigned,
     currentWord,
     correctWord,
@@ -42,7 +46,7 @@ export function Game() {
       switch (letter) {
         case '\n':
           if (!rowIsFilled) {
-            shakeElement(document.getElementById(getRowId(0)));
+            shakeElement(document.getElementById(getRowId(row)));
             addToast({ text: 'Недостаточно букв' });
             break;
           }
@@ -53,7 +57,7 @@ export function Game() {
               if (result.isValid) {
                 onWordAccepted(currentWord, result);
               } else {
-                shakeElement(document.getElementById(getRowId(0)));
+                shakeElement(document.getElementById(getRowId(row)));
                 addToast({ text: 'Некорректное слово' });
               }
             })
@@ -73,6 +77,7 @@ export function Game() {
     },
     [
       gameId,
+      row,
       currentWord,
       rowIsFilled,
       setCurrentWord,
@@ -95,16 +100,17 @@ export function Game() {
         <CongratsDialog
           open={isFinished}
           isResigned={isResigned}
+          isVictory={isVictory}
           startNewGame={startNewGame}
           attempts={attempts}
           correctWord={correctWord}
         />
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1 md:gap-2">
           {times(WORDS_COUNT, (i) => (
             <Word
               key={i}
-              id={getRowId(i)}
+              id={getRowId(i + 1)}
               word={words[i]?.word ?? ''}
               matches={words[i]?.matches}
             />
@@ -114,38 +120,6 @@ export function Game() {
         <Keyboard onKeyPress={onLetterInput} letters={letters} />
       </div>
     </>
-  );
-}
-
-function Header({
-  gameId,
-  isFinished,
-  onWordReveal,
-}: Pick<GameState, 'gameId' | 'isFinished' | 'onWordReveal'>) {
-  const addToast = useAddToast();
-
-  return (
-    <div className="flex flex-row gap-4 p-4 items-center bg-zinc-800 text-white">
-      <h1 className="text-4xl bold tracking-wider">вордли</h1>
-
-      <Button
-        className="ml-auto sm:p-1"
-        primary
-        disabled={isFinished}
-        onClick={() => {
-          api
-            .revealWord({ gameId })
-            .then(({ word }) => {
-              onWordReveal(word);
-            })
-            .catch((error) => {
-              addToast({ text: `Ошибка сети (${String(error)})` });
-            });
-        }}
-      >
-        🏳️ Сдаюсь
-      </Button>
-    </div>
   );
 }
 

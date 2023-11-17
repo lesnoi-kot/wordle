@@ -1,47 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { times } from 'lodash';
+
 import {
   CheckWordDTO,
   GameId,
   LettersMap,
   LettersMatches,
   MatchType,
-  WORDS_COUNT,
   WORD_LENGTH,
 } from 'wordle-common';
 
 import { useAddToast } from '../Toasts/ToastsProvider';
 import { api } from '../../services/api';
-
-export const useKeyboardInputEffect = (
-  onLetterInput: (letter: string) => void,
-) => {
-  useEffect(() => {
-    function onKeyUp(event: KeyboardEvent) {
-      if (event.key === 'Enter') {
-        onLetterInput('\n');
-        return;
-      }
-
-      if (event.key === 'Backspace') {
-        onLetterInput('\b');
-        return;
-      }
-
-      const key = event.key.toLowerCase();
-
-      if (key >= 'а' && key <= 'я') {
-        onLetterInput(key);
-      }
-    }
-
-    document.addEventListener('keyup', onKeyUp);
-
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, [onLetterInput]);
-};
 
 type WordRowState = {
   word: string;
@@ -53,12 +23,13 @@ const FULL_MATCH = times(WORD_LENGTH, () => MatchType.Exact) as LettersMatches;
 
 export const useGameState = () => {
   const addToast = useAddToast();
-  const [gameId, setGameId] = useState(0);
+  const [gameId, setGameId] = useState<GameId>(0);
   const [words, setWords] = useState<WordRowState[]>(DEFAULT_WORDS_STATE);
   const [letters, setLetters] = useState<LettersMap>({});
   const [correctWord, setCorrectWord] = useState('');
   const [isFinished, setIsFinished] = useState(false);
   const [isResigned, setIsResigned] = useState(false);
+  const [isVictory, setIsVictory] = useState(false);
   const [attempts, setAttempts] = useState(0);
 
   const currentWord = isFinished ? '' : words.at(-1)!.word;
@@ -111,6 +82,7 @@ export const useGameState = () => {
         setAttempts(checkResult.attempts);
         setIsFinished(true);
         setCorrectWord(checkResult.word);
+        setIsVictory(checkResult.word === guessWord);
       }
     },
     [],
@@ -125,10 +97,11 @@ export const useGameState = () => {
 
   useEffect(() => {
     setWords(DEFAULT_WORDS_STATE);
-    setCorrectWord('');
     setLetters({});
-    setIsResigned(false);
+    setCorrectWord('');
     setIsFinished(false);
+    setIsResigned(false);
+    setIsVictory(false);
     setAttempts(0);
   }, [gameId]);
 
@@ -140,6 +113,8 @@ export const useGameState = () => {
     correctWord,
     attempts,
     isResigned,
+    isVictory,
+    row: words.length,
     rowIsFilled: currentWord.length === WORD_LENGTH,
     isFinished,
     startNewGame,
