@@ -33,7 +33,7 @@ export function CongratsDialog({
           <Star gold={isVictory && attempts <= 3} />
         </div>
         <h3 className="text-xl sm:text-2xl bold">
-          {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз!'}
+          {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз'}
         </h3>
         <p className="sm:text-lg">
           Правильное слово было <b>"{correctWord}"</b>.

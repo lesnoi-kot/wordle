@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useDebugValue, useEffect } from 'react';
 import { WORDS_COUNT } from 'wordle-common';
 import { times } from 'lodash';
 
@@ -98,6 +98,7 @@ export function Game() {
 
       <div className="my-0 p-8 flex flex-col gap-8">
         <CongratsDialog
+          canClose={false}
           open={isFinished}
           isResigned={isResigned}
           isVictory={isVictory}
@@ -113,6 +114,7 @@ export function Game() {
               id={getRowId(i + 1)}
               word={words[i]?.word ?? ''}
               matches={words[i]?.matches}
+              className="justify-center"
             />
           ))}
         </div>
