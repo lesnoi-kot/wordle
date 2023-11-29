@@ -15,7 +15,7 @@ export function Keyboard({ onKeyPress, letters }: Props) {
   return (
     <div className="flex flex-col gap-2 items-center">
       {KEYBOARD_LAYOUT.map((keys, i) => (
-        <div className=" flex flex-row gap-2 flex-wrap sm:flex-nowrap" key={i}>
+        <div className=" flex flex-row gap-2" key={i}>
           {keys.map((key) => (
             <KeyButton
               key={key}

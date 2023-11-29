@@ -13,7 +13,7 @@ export function Header({
 
   return (
     <div className="flex flex-row gap-4 p-4 items-center bg-zinc-800 text-white">
-      <h1 className="text-2xl md:text-4xl bold tracking-wider">вордли</h1>
+      <h1 className="text-2xl xs:text-4xl bold tracking-wider">вордли</h1>
 
       <Button
         className="ml-auto"
