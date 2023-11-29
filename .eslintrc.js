@@ -4,23 +4,24 @@ module.exports = {
   // https://typescript-eslint.io/linting/typed-linting/monorepos/
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['tsconfig.json', './packages/*/tsconfig.json'],
+    project: ['./packages/*/tsconfig.json'],
+    ecmaFeatures: {
+      jsx: true,
+    },
     tsconfigRootDir: __dirname,
   },
 
   env: { es2020: true },
-  plugins: [
-    '@typescript-eslint/eslint-plugin',
-    'prettier',
-  ],
+  plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
   ],
   rules: {
-    '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/no-unused-vars': 1,
+    'no-unreachable': 2,
   },
 
-  ignorePatterns: ['.eslintrc.cjs', 'dist', 'node_modules'],
-}
+  ignorePatterns: ['.eslintrc.*', 'dist', 'node_modules'],
+};
