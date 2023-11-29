@@ -1,11 +1,11 @@
-import { useCallback, useDebugValue, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { WORDS_COUNT } from 'wordle-common';
 import { times } from 'lodash';
 
 import { api } from '../../services/api';
 import { useKeyboardInputEffect } from './useKeyboardInputEffect';
 import { shakeElement } from './animations';
-import { useGameState } from './useGameState';
+import { NO_MATCHES_INFO, useGameState } from './useGameState';
 
 import { Keyboard } from '../Keyboard/Keyboard';
 import { Word } from '../Word/Word';
@@ -35,7 +35,7 @@ export function Game() {
 
   useEffect(() => {
     startNewGame();
-  }, []);
+  }, [startNewGame]);
 
   const onLetterInput = useCallback(
     (letter: string) => {
@@ -82,6 +82,7 @@ export function Game() {
       rowIsFilled,
       setCurrentWord,
       onWordAccepted,
+      addToast,
       isFinished,
     ],
   );
@@ -107,13 +108,13 @@ export function Game() {
           correctWord={correctWord}
         />
 
-        <div className="flex flex-col gap-1 md:gap-2">
+        <div className="flex flex-col gap-1 xs:gap-2">
           {times(WORDS_COUNT, (i) => (
             <Word
               key={i}
               id={getRowId(i + 1)}
               word={words[i]?.word ?? ''}
-              matches={words[i]?.matches}
+              matches={words[i]?.matches ?? NO_MATCHES_INFO}
               className="justify-center"
             />
           ))}

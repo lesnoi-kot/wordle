@@ -4,21 +4,16 @@ import { Dialog } from '../Dialog';
 import { Word } from '../Word/Word';
 
 type Props = {
-  open: boolean;
   onClose: () => void;
 };
 
-export function Rules({ open, onClose }: Props) {
-  if (!open) {
-    return null;
-  }
-
+export function Rules({ onClose }: Props) {
   return (
     <Dialog
       canClose
       onClose={onClose}
-      open={open}
-      className="w-full sm:p-8 md:max-w-lg animate-fade-up"
+      open
+      className="w-full min-h-full max-w-none p-6 top-0 border-0 sm:border sm:min-h-fit sm:top-auto sm:p-8 sm:max-w-lg"
     >
       <article className="space-y-4">
         <header className="space-y-2">
@@ -30,9 +25,7 @@ export function Rules({ open, onClose }: Props) {
           <li>
             Каждая попытка должна быть валидным 5-буквенным существительным.
           </li>
-          <li>
-            Цвета квадратиков обозначают есть ли буква в загаданном слове.
-          </li>
+          <li>Цвет клетки обозначает насколько точна догадка.</li>
         </ul>
 
         <h3 className="text-xl font-bold">Примеры</h3>
@@ -42,13 +35,7 @@ export function Rules({ open, onClose }: Props) {
             <Word
               className="scale-75 origin-left"
               word="банан"
-              matches={[
-                MatchType.Exact,
-                undefined, //MatchType.None,
-                undefined, //MatchType.None,
-                undefined, //MatchType.None,
-                undefined, //MatchType.None,
-              ]}
+              matches={[MatchType.Exact, null, null, null, null]}
             />
             Буква <b>Б</b> находится в правильном месте загаданного слова.
           </div>
@@ -57,13 +44,7 @@ export function Rules({ open, onClose }: Props) {
             <Word
               className="scale-75 origin-left"
               word="берег"
-              matches={[
-                undefined,
-                MatchType.Partial,
-                undefined,
-                MatchType.Partial,
-                undefined,
-              ]}
+              matches={[null, MatchType.Partial, null, MatchType.Partial, null]}
             />
             Буква <b>Е</b> присутствует в слове, но находится на другой позиции.
           </div>
@@ -72,13 +53,7 @@ export function Rules({ open, onClose }: Props) {
             <Word
               className="scale-75 origin-left"
               word="шутка"
-              matches={[
-                undefined,
-                undefined,
-                MatchType.None,
-                undefined,
-                undefined,
-              ]}
+              matches={[null, null, MatchType.None, null, null]}
             />
             Буква <b>Т</b> не присутствует в загаданном слове.
           </div>

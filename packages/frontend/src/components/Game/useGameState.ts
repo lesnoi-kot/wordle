@@ -18,8 +18,9 @@ type WordRowState = {
   matches?: LettersMatches;
 };
 
-const DEFAULT_WORDS_STATE = [{ word: '' }];
+const DEFAULT_WORDS_STATE: WordRowState[] = [{ word: '' }];
 const FULL_MATCH = times(WORD_LENGTH, () => MatchType.Exact) as LettersMatches;
+export const NO_MATCHES_INFO = Array<null>(WORD_LENGTH).fill(null);
 
 export const useGameState = () => {
   const addToast = useAddToast();

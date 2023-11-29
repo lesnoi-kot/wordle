@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MatchType } from 'wordle-common';
 
 import { pluckElement, flipElement } from './animations';
@@ -7,7 +7,7 @@ import { pluckElement, flipElement } from './animations';
 type Props = {
   order: number;
   value: string;
-  match?: MatchType;
+  match: MatchType | null;
 };
 
 const matchTypeToColor = {
@@ -19,15 +19,15 @@ const matchTypeToColor = {
 const FLIP_ANIMATION_DELAY = 100;
 
 export function Letter({ order, value, match }: Props) {
-  const id = useId();
+  const ref = useRef<HTMLDivElement>(null);
   const [showMatchStyle, setShowMatchStyle] = useState(false);
-  const hasMatchInfo = match !== undefined;
+  const hasMatchInfo = match !== null;
 
   useEffect(() => {
     if (value && !hasMatchInfo) {
-      pluckElement(document.getElementById(id));
+      pluckElement(ref.current);
     } else if (value && hasMatchInfo) {
-      flipElement(document.getElementById(id), {
+      flipElement(ref.current, {
         delay: order * FLIP_ANIMATION_DELAY,
         afterFlipIn() {
           setShowMatchStyle(true);
@@ -54,7 +54,7 @@ export function Letter({ order, value, match }: Props) {
 
   return (
     <div
-      id={id}
+      ref={ref}
       className={`w-[60px] text-[2rem] font-bold uppercase flex items-center justify-center aspect-square select-none ${border} ${highlight}`}
     >
       {value}

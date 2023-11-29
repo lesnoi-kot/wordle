@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { negate } from 'lodash';
 
 import { Button } from '../Button/Button';
-import iconSVG from '../../assets/wordle-icon.svg';
 import { Rules } from './Rules';
+import iconSVG from '../../assets/wordle-icon.svg';
 
 type Props = {
   onStart(): void;
@@ -19,7 +18,7 @@ export function Introduction({ onStart }: Props) {
         <h1 className="text-4xl bold tracking-wider">вордли</h1>
         <p className=" text-lg">Угадай слово из 5 букв за 6 раз</p>
 
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-2 xs:gap-4">
           <Button
             onClick={() => {
               setShowRules(true);
@@ -33,12 +32,13 @@ export function Introduction({ onStart }: Props) {
         </div>
       </div>
 
-      <Rules
-        open={showRules}
-        onClose={() => {
-          setShowRules(false);
-        }}
-      />
+      {showRules && (
+        <Rules
+          onClose={() => {
+            setShowRules(false);
+          }}
+        />
+      )}
     </div>
   );
 }
