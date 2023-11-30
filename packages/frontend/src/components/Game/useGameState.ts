@@ -44,7 +44,7 @@ export const useGameState = () => {
       .catch((error) => {
         addToast({ text: `Ошибка сети (${String(error)})` });
       });
-  }, []);
+  }, [addToast]);
 
   const setCurrentWord = useCallback((word: string) => {
     setWords((words) =>

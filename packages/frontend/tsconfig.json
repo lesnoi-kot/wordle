@@ -4,9 +4,9 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "module": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Array"],
     "jsx": "react-jsx",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

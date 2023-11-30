@@ -36,7 +36,7 @@ export function ToastsProvider({ children }: { children: ReactNode }) {
     setToasts((toasts) => toasts.concat({ ...toast, id: nanoid() }));
   }, []);
 
-  const value = useMemo(() => ({ toasts, addToast }), [toasts]);
+  const value = useMemo(() => ({ toasts, addToast }), [toasts, addToast]);
 
   return (
     <ToastsContext.Provider value={value}>{children}</ToastsContext.Provider>

@@ -476,6 +476,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.12.5":
+  version: 7.23.5
+  resolution: "@babel/runtime@npm:7.23.5"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: ca679cc91bb7e424bc2db87bb58cc3b06ade916b9adb21fbbdc43e54cdaacb3eea201ceba2a0464b11d2eb65b9fe6a6ffcf4d7521fa52994f19be96f1af14788
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.21.0":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
@@ -3103,6 +3112,13 @@ __metadata:
   version: 2.1.4
   resolution: "cookiejar@npm:2.1.4"
   checksum: 2dae55611c6e1678f34d93984cbd4bda58f4fe3e5247cc4993f4a305cd19c913bbaf325086ed952e892108115073a747596453d3dc1c34947f47f731818b8ad1
+  languageName: node
+  linkType: hard
+
+"core-js@npm:3.33.3":
+  version: 3.33.3
+  resolution: "core-js@npm:3.33.3"
+  checksum: 08abdc9470c8228b9d09f61e62ab312738681202c4c34e9638889125b304b235f34c4fe22e9d41c20906ac0fcc807dca57c5ff7d6b90021bf64e8fe23461d9ab
   languageName: node
   linkType: hard
 
@@ -7075,6 +7091,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-error-boundary@npm:^4.0.11":
+  version: 4.0.11
+  resolution: "react-error-boundary@npm:4.0.11"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 33dad3df7687971e65c7182d97f44bd618cb5d77d1c338e0a7c17c5cf7706a07b9055fffb771ff19bad750d40dd3cfd18d661a60b0518e73197e294dc185f18c
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^18.0.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
@@ -8692,6 +8719,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.0.3"
     autoprefixer: "npm:^10.4.16"
     clsx: "npm:^2.0.0"
+    core-js: "npm:3.33.3"
     eslint: "npm:^8.54.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.4"
@@ -8700,6 +8728,7 @@ __metadata:
     postcss: "npm:^8.4.31"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    react-error-boundary: "npm:^4.0.11"
     tailwindcss: "npm:^3.3.5"
     tailwindcss-animated: "npm:^1.0.1"
     typescript: "npm:^5.2.2"
