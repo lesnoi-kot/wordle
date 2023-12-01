@@ -8726,6 +8726,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     nanoid: "npm:^5.0.3"
     postcss: "npm:^8.4.31"
+    postcss-import: "npm:^15.1.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-error-boundary: "npm:^4.0.11"
