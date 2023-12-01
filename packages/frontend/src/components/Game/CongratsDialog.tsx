@@ -1,57 +1,52 @@
 import clsx from 'clsx';
-import { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithRef, ForwardedRef, forwardRef } from 'react';
 import { WORDS_COUNT } from 'wordle-common';
 
-import { Dialog } from '../Dialog';
+import { Dialog } from '../Dialog/Dialog';
 import { Button } from '../Button/Button';
 
 type Props = ComponentPropsWithRef<typeof Dialog> & {
   attempts: number;
   correctWord: string;
-  isResigned: boolean;
   isVictory: boolean;
+  isResigned?: boolean;
   startNewGame(): void;
 };
 
-export function CongratsDialog({
-  open,
-  attempts,
-  isResigned,
-  isVictory,
-  correctWord,
-  startNewGame,
-}: Props) {
-  return (
-    <Dialog
-      open={open}
-      className="animate-delay-[1000ms] animate-fade-down animate-once w-3/4"
-    >
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-row gap-2">
-          <Star gold={isVictory && attempts <= WORDS_COUNT} />
-          <Star gold={isVictory && attempts <= 5} />
-          <Star gold={isVictory && attempts <= 3} />
-        </div>
-        <h3 className="text-xl sm:text-2xl bold">
-          {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз'}
-        </h3>
-        <p className="sm:text-lg">
-          Правильное слово было <b>"{correctWord}"</b>.
-        </p>
+export const CongratsDialog = forwardRef(
+  (
+    { attempts, isVictory, correctWord, startNewGame }: Props,
+    ref: ForwardedRef<HTMLDialogElement>,
+  ) => {
+    return (
+      <Dialog ref={ref} className="w-3/4">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row gap-2">
+            <Star gold={isVictory && attempts <= WORDS_COUNT} />
+            <Star gold={isVictory && attempts <= 5} />
+            <Star gold={isVictory && attempts <= 3} />
+          </div>
+          <h3 className="text-xl sm:text-2xl bold">
+            {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз'}
+          </h3>
+          <p className="sm:text-lg">
+            Правильное слово было <b>"{correctWord}"</b>.
+          </p>
 
-        <Button
-          className="mt-8 self-end"
-          onClick={() => {
-            startNewGame();
-          }}
-          primary
-        >
-          Новая игра
-        </Button>
-      </div>
-    </Dialog>
-  );
-}
+          <Button
+            className="mt-8 self-end"
+            onClick={() => {
+              startNewGame();
+            }}
+            primary
+          >
+            Новая игра
+          </Button>
+        </div>
+      </Dialog>
+    );
+  },
+);
 
 function getCongratsText(attempts: number) {
   if (attempts === 1) {
@@ -74,7 +69,7 @@ function Star({ gold }: { gold: boolean }) {
       viewBox="0 0 50 50"
       width="30px"
       height="30px"
-      className={gold ? 'animate-jump animate-once' : ''}
+      className={gold ? 'animate-jump animate-once animate-delay-500' : ''}
     >
       <path
         className={clsx(gold ? 'fill-[gold]' : 'fill-[lightgray]')}

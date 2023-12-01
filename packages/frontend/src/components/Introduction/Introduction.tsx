@@ -1,7 +1,7 @@
-import { useState } from 'react';
-
 import { Button } from '../Button/Button';
 import { Rules } from './Rules';
+import { useDialogController } from '../Dialog/hooks';
+
 import iconSVG from '../../assets/wordle-icon.svg';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function Introduction({ onStart }: Props) {
-  const [showRules, setShowRules] = useState(false);
+  const { ref: dialogRef, showModal, close } = useDialogController();
 
   return (
     <div className="min-h-screen flex place-items-center place-content-center">
@@ -21,7 +21,7 @@ export function Introduction({ onStart }: Props) {
         <div className="flex flex-row gap-2 xs:gap-4">
           <Button
             onClick={() => {
-              setShowRules(true);
+              showModal();
             }}
           >
             Правила игры
@@ -32,13 +32,12 @@ export function Introduction({ onStart }: Props) {
         </div>
       </div>
 
-      {showRules && (
-        <Rules
-          onClose={() => {
-            setShowRules(false);
-          }}
-        />
-      )}
+      <Rules
+        ref={dialogRef}
+        onClose={() => {
+          close();
+        }}
+      />
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { Word } from '../Word/Word';
 import { useAddToast } from '../Toasts/ToastsProvider';
 import { CongratsDialog } from './CongratsDialog';
 import { Header } from './Header';
+import { useDialogController } from '../Dialog/hooks';
 
 export function Game() {
   const {
@@ -89,6 +90,20 @@ export function Game() {
 
   useKeyboardInputEffect(onLetterInput);
 
+  const {
+    ref: dialogRef,
+    showModal,
+    close: closeDialog,
+  } = useDialogController();
+
+  useEffect(() => {
+    if (isFinished) {
+      setTimeout(() => {
+        showModal();
+      }, 1000);
+    }
+  }, [isFinished, showModal]);
+
   return (
     <>
       <Header
@@ -97,13 +112,16 @@ export function Game() {
         onWordReveal={onWordReveal}
       />
 
-      <div className="my-0 p-8 flex flex-col gap-8">
+      <div className="my-0 p-4 xs:p-8 pb-4 flex flex-col gap-4 xs:gap-8">
         <CongratsDialog
+          ref={dialogRef}
           canClose={false}
-          open={isFinished}
           isResigned={isResigned}
           isVictory={isVictory}
-          startNewGame={startNewGame}
+          startNewGame={() => {
+            closeDialog();
+            startNewGame();
+          }}
           attempts={attempts}
           correctWord={correctWord}
         />
