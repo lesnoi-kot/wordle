@@ -1,9 +1,8 @@
 import type { FallbackProps } from 'react-error-boundary';
-import { Button } from './Button/Button';
 
 export function ErrorBoundaryFallback({ error }: FallbackProps) {
   return (
-    <div className="p-10">
+    <div className="p-10 flex flex-col items-start">
       <h1 className="text-3xl mb-4">Произошла неожиданная ошибка!</h1>
       <h3 className="text-2xl mb-2">Детали</h3>
       <p className="mb-2">
@@ -14,15 +13,9 @@ export function ErrorBoundaryFallback({ error }: FallbackProps) {
         <pre className="text-sm max-w-full overflow-scroll">{error.stack}</pre>
       )}
 
-      <hr className="my-4" />
-
-      <Button
-        onClick={() => {
-          document.location = '/';
-        }}
-      >
+      <a href="/" className="btn mt-4">
         На главную
-      </Button>
+      </a>
     </div>
   );
 }

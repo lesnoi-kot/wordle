@@ -1,17 +1,14 @@
 import clsx from 'clsx';
 
-import './Button.css';
-
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = {
   primary?: boolean;
-};
+  className?: string;
+} & React.ComponentProps<'button'>;
 
-export function Button({ primary, className = '', ...props }: Props) {
-  const extraStyles = clsx(primary && 'border-gray-300', className);
-
+export function Button({ primary, className, ...props }: Props) {
   return (
     <button
-      className={`btn py-2 px-4 xs:py-4 xs:px-8 rounded-lg border border-transparent transition-colors ${extraStyles}`}
+      className={clsx('btn', primary && 'border-gray-300', className)}
       {...props}
     />
   );
