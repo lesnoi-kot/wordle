@@ -7014,6 +7014,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qrcode-terminal@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "qrcode-terminal@npm:0.12.0"
+  bin:
+    qrcode-terminal: ./bin/qrcode-terminal.js
+  checksum: 1d8996a743d6c95e22056bd45fe958c306213adc97d7ef8cf1e03bc1aeeb6f27180a747ec3d761141921351eb1e3ca688f7b673ab54cdae9fa358dffaa49563c
+  languageName: node
+  linkType: hard
+
 "qs@npm:6.11.0":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
@@ -8503,6 +8512,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-qrcode@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "vite-plugin-qrcode@npm:0.2.2"
+  dependencies:
+    qrcode-terminal: "npm:^0.12.0"
+  peerDependencies:
+    vite: ^3.0.0 || ^4.0.0
+  checksum: ec506e8f38b527f8c90a276edc194502e18e2a251296ff21ffde16213ea7c4adce2be0bd2aeb54cf660f8b2b5dcf9eb96c588f406e02bea4b52bcd218498e6f4
+  languageName: node
+  linkType: hard
+
 "vite@npm:^4.5.0":
   version: 4.5.0
   resolution: "vite@npm:4.5.0"
@@ -8734,6 +8754,7 @@ __metadata:
     tailwindcss-animated: "npm:^1.0.1"
     typescript: "npm:^5.2.2"
     vite: "npm:^4.5.0"
+    vite-plugin-qrcode: "npm:^0.2.2"
     wordle-common: "workspace:^"
   languageName: unknown
   linkType: soft

@@ -47,3 +47,6 @@ lerna-debug.log*
 # Tests
 /coverage
 /.nyc_output
+
+# Local configs
+.env.local
