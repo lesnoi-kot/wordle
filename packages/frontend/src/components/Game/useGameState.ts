@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { times } from 'lodash';
+import { useCallback, useEffect, useState } from "react";
+import { times } from "lodash";
 
 import {
   CheckWordDTO,
@@ -8,17 +8,17 @@ import {
   LettersMatches,
   MatchType,
   WORD_LENGTH,
-} from 'wordle-common';
+} from "wordle-common";
 
-import { useAddToast } from '../Toasts/ToastsProvider';
-import { api } from '../../services/api';
+import { useAddToast } from "../Toasts/ToastsProvider";
+import { api } from "../../services/api";
 
 type WordRowState = {
   word: string;
   matches?: LettersMatches;
 };
 
-const DEFAULT_WORDS_STATE: WordRowState[] = [{ word: '' }];
+const DEFAULT_WORDS_STATE: WordRowState[] = [{ word: "" }];
 const FULL_MATCH = times(WORD_LENGTH, () => MatchType.Exact) as LettersMatches;
 export const NO_MATCHES_INFO = Array<null>(WORD_LENGTH).fill(null);
 
@@ -27,13 +27,13 @@ export const useGameState = () => {
   const [gameId, setGameId] = useState<GameId>(0);
   const [words, setWords] = useState<WordRowState[]>(DEFAULT_WORDS_STATE);
   const [letters, setLetters] = useState<LettersMap>({});
-  const [correctWord, setCorrectWord] = useState('');
+  const [correctWord, setCorrectWord] = useState("");
   const [isFinished, setIsFinished] = useState(false);
   const [isResigned, setIsResigned] = useState(false);
   const [isVictory, setIsVictory] = useState(false);
   const [attempts, setAttempts] = useState(0);
 
-  const currentWord = isFinished ? '' : words.at(-1)!.word;
+  const currentWord = isFinished ? "" : words.at(-1)!.word;
 
   const startNewGame = useCallback(() => {
     api
@@ -76,7 +76,7 @@ export const useGameState = () => {
       setWords((words) =>
         words
           .with(-1, { word: guessWord, matches: checkResult.matches })
-          .concat({ word: '' }),
+          .concat({ word: "" }),
       );
 
       if (checkResult.finished) {
@@ -99,7 +99,7 @@ export const useGameState = () => {
   useEffect(() => {
     setWords(DEFAULT_WORDS_STATE);
     setLetters({});
-    setCorrectWord('');
+    setCorrectWord("");
     setIsFinished(false);
     setIsResigned(false);
     setIsVictory(false);

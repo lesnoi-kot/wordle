@@ -1,18 +1,18 @@
-import { useCallback, useEffect } from 'react';
-import { WORDS_COUNT } from 'wordle-common';
-import { times } from 'lodash';
+import { useCallback, useEffect } from "react";
+import { WORDS_COUNT } from "wordle-common";
+import { times } from "lodash";
 
-import { api } from '../../services/api';
-import { useKeyboardInputEffect } from './useKeyboardInputEffect';
-import { shakeElement } from './animations';
-import { NO_MATCHES_INFO, useGameState } from './useGameState';
+import { api } from "../../services/api";
+import { useKeyboardInputEffect } from "./useKeyboardInputEffect";
+import { shakeElement } from "./animations";
+import { NO_MATCHES_INFO, useGameState } from "./useGameState";
 
-import { Keyboard } from '../Keyboard/Keyboard';
-import { Word } from '../Word/Word';
-import { useAddToast } from '../Toasts/ToastsProvider';
-import { CongratsDialog } from './CongratsDialog';
-import { Header } from './Header';
-import { useDialogController } from '../Dialog/hooks';
+import { Keyboard } from "../Keyboard/Keyboard";
+import { Word } from "../Word/Word";
+import { useAddToast } from "../Toasts/ToastsProvider";
+import { CongratsDialog } from "./CongratsDialog";
+import { Header } from "./Header";
+import { useDialogController } from "../Dialog/hooks";
 
 export function Game() {
   const {
@@ -45,10 +45,10 @@ export function Game() {
       }
 
       switch (letter) {
-        case '\n':
+        case "\n":
           if (!rowIsFilled) {
             shakeElement(document.getElementById(getRowId(row)));
-            addToast({ text: 'Недостаточно букв' });
+            addToast({ text: "Недостаточно букв" });
             break;
           }
 
@@ -59,7 +59,7 @@ export function Game() {
                 onWordAccepted(currentWord, result);
               } else {
                 shakeElement(document.getElementById(getRowId(row)));
-                addToast({ text: 'Некорректное слово' });
+                addToast({ text: "Некорректное слово" });
               }
             })
             .catch((error) => {
@@ -67,7 +67,7 @@ export function Game() {
             });
           break;
 
-        case '\b':
+        case "\b":
           setCurrentWord(currentWord.substring(0, currentWord.length - 1));
           break;
 
@@ -92,46 +92,47 @@ export function Game() {
 
   const {
     ref: dialogRef,
-    showModal,
+    show: showDialog,
     close: closeDialog,
   } = useDialogController();
 
   useEffect(() => {
     if (isFinished) {
       setTimeout(() => {
-        showModal();
-      }, 1000);
+        showDialog();
+      }, 1300);
     }
-  }, [isFinished, showModal]);
+  }, [isFinished, showDialog]);
 
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <Header
         gameId={gameId}
         isFinished={isFinished}
         onWordReveal={onWordReveal}
       />
 
-      <div className="my-0 p-4 xs:p-8 pb-4 flex flex-col gap-4 xs:gap-8">
+      <div className="my-0 flex grow flex-col gap-4 p-4 pb-4 xs:gap-8 xs:p-8">
         <CongratsDialog
           ref={dialogRef}
           canClose={false}
           isResigned={isResigned}
           isVictory={isVictory}
           startNewGame={() => {
-            closeDialog();
-            startNewGame();
+            closeDialog(() => {
+              startNewGame();
+            });
           }}
           attempts={attempts}
           correctWord={correctWord}
         />
 
-        <div className="flex flex-col gap-1 xs:gap-2">
+        <div className="flex flex-col gap-1 xs:grow xs:gap-2">
           {times(WORDS_COUNT, (i) => (
             <Word
               key={i}
               id={getRowId(i + 1)}
-              word={words[i]?.word ?? ''}
+              word={words[i]?.word ?? ""}
               matches={words[i]?.matches ?? NO_MATCHES_INFO}
               className="justify-center"
             />
@@ -140,7 +141,7 @@ export function Game() {
 
         <Keyboard onKeyPress={onLetterInput} letters={letters} />
       </div>
-    </>
+    </div>
   );
 }
 

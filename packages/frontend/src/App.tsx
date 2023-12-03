@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Introduction } from './components/Introduction/Introduction';
-import { Game } from './components/Game/Game';
-import { Toasts } from './components/Toasts/Toasts';
+import { Introduction } from "./components/Introduction/Introduction";
+import { Game } from "./components/Game/Game";
+import { Toasts } from "./components/Toasts/Toasts";
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
@@ -18,10 +18,10 @@ function App() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto relative">
+    <div className="relative mx-auto max-w-5xl">
       <Game />
 
-      <div className="absolute right-0 top-0 mr-4 mt-[6rem]">
+      <div className="absolute right-0 top-0 mr-4 mt-12 xs:mt-[6rem]">
         <Toasts />
       </div>
     </div>

@@ -1,6 +1,6 @@
 const pluckKeyframes: Keyframe[] = [
-  { transform: 'scale(0.8)', opacity: 0 },
-  { transform: 'scale(1.1)', opacity: 1 },
+  { transform: "scale(0.8)", opacity: 0 },
+  { transform: "scale(1.1)", opacity: 1 },
 ];
 
 const pluckTiming = {
@@ -15,22 +15,22 @@ export function pluckElement(el: HTMLElement | null | undefined) {
 }
 
 const flipInKeyframes: Keyframe[] = [
-  { transform: 'scaleY(1)' },
-  { transform: 'scaleY(0.5)' },
-  { transform: 'scaleY(0)' },
+  { transform: "scaleY(1)" },
+  { transform: "scaleY(0.5)" },
+  { transform: "scaleY(0)" },
 ];
 
 const flipOutKeyframes: Keyframe[] = [
-  { transform: 'scaleY(0)' },
-  { transform: 'scaleY(0.5)' },
-  { transform: 'scaleY(1)' },
+  { transform: "scaleY(0)" },
+  { transform: "scaleY(0.5)" },
+  { transform: "scaleY(1)" },
 ];
 
 const flipTiming = {
   duration: 300,
   iterations: 1,
-  fill: 'forwards',
-  easing: 'linear',
+  fill: "forwards",
+  easing: "linear",
 } satisfies KeyframeAnimationOptions;
 
 type FlipElementOptions = {

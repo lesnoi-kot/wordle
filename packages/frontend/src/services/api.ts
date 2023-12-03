@@ -1,4 +1,4 @@
-import { CheckWordDTO, GameId, NewGameDTO, RevealWordDTO } from 'wordle-common';
+import { CheckWordDTO, GameId, NewGameDTO, RevealWordDTO } from "wordle-common";
 
 type APIOptions = {
   baseUrl: string;
@@ -21,15 +21,15 @@ class API {
   }
 
   async getRandomWordHandle(): Promise<NewGameDTO> {
-    const url = new URL('/words/random', this.baseUrl);
+    const url = new URL("/words/random", this.baseUrl);
     const resp = await fetch(url);
     return (await resp.json()) as NewGameDTO;
   }
 
   async checkWord(options: CheckWordOptions): Promise<CheckWordDTO> {
-    const url = new URL('/words/check', this.baseUrl);
-    url.searchParams.append('gameId', String(options.gameId));
-    url.searchParams.append('word', options.guessWord);
+    const url = new URL("/words/check", this.baseUrl);
+    url.searchParams.append("gameId", String(options.gameId));
+    url.searchParams.append("word", options.guessWord);
 
     const resp = await fetch(url);
     const body = (await resp.json()) as CheckWordDTO;
@@ -37,10 +37,10 @@ class API {
   }
 
   async revealWord(options: RevealWordOptions): Promise<RevealWordDTO> {
-    const url = new URL('/words/reveal', this.baseUrl);
-    url.searchParams.append('gameId', String(options.gameId));
+    const url = new URL("/words/reveal", this.baseUrl);
+    url.searchParams.append("gameId", String(options.gameId));
 
-    const resp = await fetch(url, { method: 'POST' });
+    const resp = await fetch(url, { method: "POST" });
     const body = (await resp.json()) as RevealWordDTO;
     return body;
   }

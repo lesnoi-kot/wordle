@@ -1,7 +1,7 @@
-import { ComponentPropsWithRef, ForwardedRef, forwardRef } from 'react';
-import clsx from 'clsx';
+import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
+import clsx from "clsx";
 
-type Props = ComponentPropsWithRef<'dialog'> & {
+type Props = ComponentPropsWithRef<"dialog"> & {
   canClose?: boolean;
   onClose?(): void;
 };
@@ -16,14 +16,14 @@ export const Dialog = forwardRef(
         onClose={onClose}
         ref={ref}
         className={clsx(
-          'p-4 rounded-md shadow-xl max-w-md backdrop:opacity-25 backdrop:bg-gray-100 dark:backdrop:bg-gray-800 border z-[9999]',
+          "z-[9999] max-w-md rounded-md border p-4 shadow-xl backdrop:bg-gray-100 backdrop:opacity-25 dark:backdrop:bg-gray-800",
           className,
         )}
         {...props}
       >
         {canClose && (
           <button
-            className="absolute top-0 right-0 w-10 h-10 active:scale-90"
+            className="absolute right-0 top-0 h-10 w-10 text-lg active:scale-90"
             title="Закрыть"
             aria-label="Закрыть"
             onClick={onClose}

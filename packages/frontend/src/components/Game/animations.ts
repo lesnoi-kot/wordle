@@ -1,13 +1,13 @@
 const shakeKeyframes = [
-  { transform: 'translateX(-1px)' },
-  { transform: 'translateX(2px)' },
-  { transform: 'translateX(-4px)' },
-  { transform: 'translateX(4px)' },
-  { transform: 'translateX(-4px)' },
-  { transform: 'translateX(4px)' },
-  { transform: 'translateX(-4px)' },
-  { transform: 'translateX(2px)' },
-  { transform: 'translateX(-1px)' },
+  { transform: "translateX(-1px)" },
+  { transform: "translateX(2px)" },
+  { transform: "translateX(-4px)" },
+  { transform: "translateX(4px)" },
+  { transform: "translateX(-4px)" },
+  { transform: "translateX(4px)" },
+  { transform: "translateX(-4px)" },
+  { transform: "translateX(2px)" },
+  { transform: "translateX(-1px)" },
 ];
 
 const shakeTiming = {

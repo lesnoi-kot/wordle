@@ -1,9 +1,9 @@
-import clsx from 'clsx';
-import { ComponentPropsWithRef, ForwardedRef, forwardRef } from 'react';
-import { WORDS_COUNT } from 'wordle-common';
+import clsx from "clsx";
+import { ComponentPropsWithRef, ForwardedRef, forwardRef } from "react";
+import { WORDS_COUNT } from "wordle-common";
 
-import { Dialog } from '../Dialog/Dialog';
-import { Button } from '../Button/Button';
+import { Dialog } from "../Dialog/Dialog";
+import { Button } from "../Button/Button";
 
 type Props = ComponentPropsWithRef<typeof Dialog> & {
   attempts: number;
@@ -26,8 +26,8 @@ export const CongratsDialog = forwardRef(
             <Star gold={isVictory && attempts <= 5} />
             <Star gold={isVictory && attempts <= 3} />
           </div>
-          <h3 className="text-xl sm:text-2xl bold">
-            {isVictory ? getCongratsText(attempts) : 'Попробуй еще раз'}
+          <h3 className="bold text-xl sm:text-2xl">
+            {isVictory ? getCongratsText(attempts) : "Попробуй еще раз"}
           </h3>
           <p className="sm:text-lg">
             Правильное слово было <b>"{correctWord}"</b>.
@@ -50,14 +50,14 @@ export const CongratsDialog = forwardRef(
 
 function getCongratsText(attempts: number) {
   if (attempts === 1) {
-    return 'Невероятная удача!';
+    return "Невероятная удача!";
   }
 
   if (attempts <= 3) {
-    return 'Супер!';
+    return "Супер!";
   }
 
-  return 'Хороший результат!';
+  return "Хороший результат!";
 }
 
 function Star({ gold }: { gold: boolean }) {
@@ -69,10 +69,10 @@ function Star({ gold }: { gold: boolean }) {
       viewBox="0 0 50 50"
       width="30px"
       height="30px"
-      className={gold ? 'animate-jump animate-once animate-delay-500' : ''}
+      className={gold ? "animate-jump animate-delay-500 animate-once" : ""}
     >
       <path
-        className={clsx(gold ? 'fill-[gold]' : 'fill-[lightgray]')}
+        className={clsx(gold ? "fill-[gold]" : "fill-[lightgray]")}
         d="M26.285,2.486l5.407,10.956c0.376,0.762,1.103,1.29,1.944,1.412l12.091,1.757
     c2.118,0.308,2.963,2.91,1.431,4.403l-8.749,8.528c-0.608,0.593-0.886,1.448-0.742,2.285l2.065,12.042
     c0.362,2.109-1.852,3.717-3.746,2.722l-10.814-5.685c-0.752-0.395-1.651-0.395-2.403,0l-10.814,5.685

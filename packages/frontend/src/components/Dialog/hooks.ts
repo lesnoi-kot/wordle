@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef } from "react";
 
 const fadeInKeyframes: Keyframe[] = [{ opacity: 0 }, { opacity: 1 }];
 const fadeOutKeyframes: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }];

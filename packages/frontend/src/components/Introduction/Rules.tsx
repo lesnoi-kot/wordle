@@ -1,8 +1,8 @@
-import { ForwardedRef, forwardRef } from 'react';
-import { MatchType } from 'wordle-common';
+import { ForwardedRef, forwardRef } from "react";
+import { MatchType } from "wordle-common";
 
-import { Dialog } from '../Dialog/Dialog';
-import { Word } from '../Word/Word';
+import { Dialog } from "../Dialog/Dialog";
+import { Word } from "../Word/Word";
 
 type Props = {
   onClose: () => void;
@@ -15,7 +15,7 @@ export const Rules = forwardRef(
         ref={ref}
         canClose
         onClose={onClose}
-        className="w-full min-h-full max-w-none p-6 top-0 border-0 sm:border sm:min-h-fit sm:p-8 sm:max-w-lg"
+        className="top-0 min-h-full w-full max-w-none border-0 p-6 sm:min-h-fit sm:max-w-lg sm:border sm:p-8"
       >
         <article className="space-y-4">
           <header className="space-y-2">
@@ -35,7 +35,7 @@ export const Rules = forwardRef(
           <section className="space-y-4">
             <div>
               <Word
-                className="scale-75 origin-left"
+                className="origin-left scale-75"
                 word="банан"
                 matches={[MatchType.Exact, null, null, null, null]}
               />
@@ -44,7 +44,7 @@ export const Rules = forwardRef(
 
             <div>
               <Word
-                className="scale-75 origin-left"
+                className="origin-left scale-75"
                 word="берег"
                 matches={[
                   null,
@@ -60,7 +60,7 @@ export const Rules = forwardRef(
 
             <div>
               <Word
-                className="scale-75 origin-left"
+                className="origin-left scale-75"
                 word="шутка"
                 matches={[null, null, MatchType.None, null, null]}
               />

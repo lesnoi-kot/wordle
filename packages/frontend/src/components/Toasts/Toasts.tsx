@@ -1,4 +1,4 @@
-import { useToasts } from './ToastsProvider';
+import { useRemoveToast, useToasts } from "./ToastsProvider";
 
 export function Toasts() {
   const toasts = useToasts();
@@ -9,6 +9,7 @@ export function Toasts() {
         <div
           key={toast.id}
           className="p-2 px-4 rounded-md bg-slate-100 dark:bg-slate-800 animate-fade"
+          className="animate-fade select-none rounded-md bg-slate-100 p-2 px-4 dark:bg-slate-800"
         >
           {toast.text}
         </div>

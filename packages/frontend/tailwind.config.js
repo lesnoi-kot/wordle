@@ -1,16 +1,16 @@
-import animated from 'tailwindcss-animated';
-import defaultTheme from 'tailwindcss/defaultTheme';
+import animated from "tailwindcss-animated";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
     screens: {
-      xs: '420px',
+      xs: "450px",
       ...defaultTheme.screens,
     },
   },
-  darkMode: 'media',
+  darkMode: "media",
   plugins: [animated],
 };

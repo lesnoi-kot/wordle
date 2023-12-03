@@ -1,35 +1,43 @@
-import clsx from 'clsx';
-import { MatchType } from 'wordle-common';
+import clsx from "clsx";
+import { MatchType } from "wordle-common";
 
 type Props = {
   char: string;
-  match: MatchType;
+  match?: MatchType;
+  className?: string;
   onClick(key: string): void;
 };
 
 const matchTypeToColor = {
-  [MatchType.None]: 'bg-[#3a3a3c]',
-  [MatchType.Partial]: 'bg-[#c9b458]',
-  [MatchType.Exact]: 'bg-[#6aaa64]',
+  [MatchType.None]: "bg-[#3a3a3c]",
+  [MatchType.Partial]: "bg-[#c9b458]",
+  [MatchType.Exact]: "bg-[#6aaa64]",
 };
 
-export function KeyButton({ char, match, onClick }: Props) {
+export function KeyButton({ char, match, onClick, className }: Props) {
   const content =
-    char === '\b' ? <BackspaceIcon /> : char === '\n' ? 'enter' : char;
+    char === "\b" ? <BackspaceIcon /> : char === "\n" ? "enter" : char;
 
   const textStyling = clsx(
-    'text-black dark:text-white uppercase font-bold',
-    match !== undefined && 'text-white',
-    char === '\n' ? 'text-xs' : 'text-sm sm:text-xl',
+    "text-center text-black dark:text-white uppercase font-bold",
+    match !== undefined && "text-white",
+    char === "\n" ? "text-xs" : "text-sm sm:text-xl",
   );
 
   const bgStyling = clsx(
-    matchTypeToColor[match] ?? 'bg-[#d3d6da] dark:bg-[#818384]',
+    match === undefined
+      ? "bg-[#d3d6da] dark:bg-[#818384]"
+      : matchTypeToColor[match],
   );
 
   return (
     <button
-      className={`p-1 xs:p-2 sm:p-3 md:p-4 ${textStyling} ${bgStyling} rounded select-none transition-colors`}
+      className={clsx(
+        "w-full select-none rounded p-1 transition-colors xs:p-2 sm:p-3 md:p-4",
+        textStyling,
+        bgStyling,
+        className,
+      )}
       onClick={() => {
         onClick(char);
       }}
@@ -46,6 +54,7 @@ function BackspaceIcon() {
       height="20"
       viewBox="0 0 24 24"
       width="20"
+      className="inline"
     >
       <path
         className="dark:fill-white"

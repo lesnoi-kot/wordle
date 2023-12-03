@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import {
   ReactNode,
   createContext,
@@ -6,7 +6,7 @@ import {
   useContext,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 
 type Toast = {
   id: string;
@@ -14,7 +14,7 @@ type Toast = {
   ttl?: number;
 };
 
-type AddToastOptions = Pick<Toast, 'text' | 'ttl'>;
+type AddToastOptions = Pick<Toast, "text" | "ttl">;
 
 type ToastsContextState = {
   toasts: Toast[];
