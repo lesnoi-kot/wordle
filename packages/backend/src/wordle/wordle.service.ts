@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
 import {
   CheckWordDTO,
@@ -9,10 +9,10 @@ import {
   MatchType,
   WORDS_COUNT,
   WORD_LENGTH,
-} from 'wordle-common';
+} from "wordle-common";
 
-import { GameEntity } from '../entities/game.entity.js';
-import { WordEntity, WordsCountEntity } from '../entities/word.entity.js';
+import { GameEntity } from "../entities/game.entity.js";
+import { WordEntity, WordsCountEntity } from "../entities/word.entity.js";
 
 @Injectable()
 export class WordleService {
@@ -37,7 +37,7 @@ export class WordleService {
       return { isValid: false };
     }
 
-    await this.gamesRepo.increment({ id: gameId }, 'attempts', 1);
+    await this.gamesRepo.increment({ id: gameId }, "attempts", 1);
     const game = await this.gamesRepo.findOneBy({ id: gameId });
 
     if (!game) {

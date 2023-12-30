@@ -25,7 +25,7 @@ export function useDialogController() {
     }
   }, []);
 
-  const close = useCallback(() => {
+  const close = useCallback((cb?: () => void) => {
     const el = ref.current;
 
     if (!el) {
@@ -35,6 +35,7 @@ export function useDialogController() {
     const animation = el.animate(fadeOutKeyframes, fadeOptions);
     animation.onfinish = () => {
       el.close();
+      cb?.();
     };
   }, []);
 

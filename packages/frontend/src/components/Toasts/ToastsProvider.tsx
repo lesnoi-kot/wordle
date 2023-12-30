@@ -19,6 +19,7 @@ type AddToastOptions = Pick<Toast, "text" | "ttl">;
 type ToastsContextState = {
   toasts: Toast[];
   addToast(toast: AddToastOptions): void;
+  removeToast(toastId: string): void;
 };
 
 const ToastsContext = createContext<ToastsContextState | null>(null);
@@ -36,7 +37,14 @@ export function ToastsProvider({ children }: { children: ReactNode }) {
     setToasts((toasts) => toasts.concat({ ...toast, id: nanoid() }));
   }, []);
 
-  const value = useMemo(() => ({ toasts, addToast }), [toasts, addToast]);
+  const removeToast = useCallback((toastId: string) => {
+    setToasts((toasts) => toasts.filter((toast) => toast.id !== toastId));
+  }, []);
+
+  const value = useMemo(
+    () => ({ toasts, addToast, removeToast }),
+    [toasts, addToast, removeToast],
+  );
 
   return (
     <ToastsContext.Provider value={value}>{children}</ToastsContext.Provider>
@@ -55,4 +63,9 @@ export function useToasts() {
 export function useAddToast() {
   const { addToast } = useToastsContext();
   return addToast;
+}
+
+export function useRemoveToast() {
+  const { removeToast } = useToastsContext();
+  return removeToast;
 }

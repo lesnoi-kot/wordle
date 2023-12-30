@@ -13,7 +13,7 @@ export function ErrorBoundaryFallback({ error }: FallbackProps) {
         <pre className="max-w-full overflow-scroll text-sm">{error.stack}</pre>
       )}
 
-      <a href="/" className="btn mt-4">
+      <a href="/" className="btn btn-primary mt-4">
         На главную
       </a>
     </div>

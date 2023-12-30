@@ -1,4 +1,4 @@
-import { MatchType } from './enums';
+import { MatchType } from "./enums";
 
 export type GameId = number;
 

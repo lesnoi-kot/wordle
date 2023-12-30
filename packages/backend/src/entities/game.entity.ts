@@ -4,22 +4,22 @@ import {
   Column,
   OneToOne,
   JoinColumn,
-} from 'typeorm';
+} from "typeorm";
 
-import { WordEntity } from './word.entity.js';
+import { WordEntity } from "./word.entity.js";
 
-@Entity('games')
+@Entity("games")
 export class GameEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'word_id' })
+  @Column({ name: "word_id" })
   wordId: number;
 
   @Column({ default: 0 })
   attempts: number;
 
   @OneToOne((type) => WordEntity)
-  @JoinColumn({ name: 'word_id' })
+  @JoinColumn({ name: "word_id" })
   word: Promise<WordEntity>;
 }

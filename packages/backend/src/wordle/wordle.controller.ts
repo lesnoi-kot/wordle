@@ -1,29 +1,38 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from "@nestjs/common";
 
-import { NewGameDTO, RevealWordDTO } from 'wordle-common';
+import {
+  CheckWordDTO,
+  NewGameDTO,
+  RevealWordDTO,
+  WORD_LENGTH,
+} from "wordle-common";
 
-import { WordleService } from './wordle.service.js';
+import { WordleService } from "./wordle.service.js";
 
-@Controller('/words')
+@Controller("/words")
 export class WordleController {
   constructor(private readonly appService: WordleService) {}
 
-  @Get('/random')
+  @Get("/random")
   async getRandomWordHandle(): Promise<NewGameDTO> {
     const { gameId } = await this.appService.newGame();
     return { gameId };
   }
 
-  @Get('/check')
+  @Get("/check")
   async checkWord(
-    @Query('gameId') gameId: string,
-    @Query('word') word: string,
-  ) {
+    @Query("gameId") gameId: string,
+    @Query("word") word: string,
+  ): Promise<CheckWordDTO> {
+    if (word.length !== WORD_LENGTH) {
+      return { isValid: false };
+    }
+
     return this.appService.checkWord(Number(gameId), word);
   }
 
-  @Post('/reveal')
-  async revealWord(@Query('gameId') gameId: string): Promise<RevealWordDTO> {
+  @Post("/reveal")
+  async revealWord(@Query("gameId") gameId: string): Promise<RevealWordDTO> {
     const { word } = await this.appService.revealWord(Number(gameId));
     return { word };
   }

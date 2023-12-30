@@ -1,14 +1,11 @@
 import clsx from "clsx";
 
-type Props = {
-  primary?: boolean;
-  className?: string;
-} & React.ComponentProps<"button">;
+type Props = React.ComponentProps<"button"> & { primary?: boolean };
 
 export function Button({ primary, className, ...props }: Props) {
   return (
     <button
-      className={clsx("btn", primary && "border-gray-500", className)}
+      className={clsx("btn", primary && "btn-primary", className)}
       {...props}
     />
   );

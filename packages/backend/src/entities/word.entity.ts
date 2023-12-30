@@ -4,9 +4,9 @@ import {
   PrimaryGeneratedColumn,
   ViewEntity,
   ViewColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity('words')
+@Entity("words")
 export class WordEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,7 +15,7 @@ export class WordEntity {
   word: string;
 }
 
-@ViewEntity('words_count', { materialized: true })
+@ViewEntity("words_count", { materialized: true })
 export class WordsCountEntity {
   @ViewColumn()
   count: number;
