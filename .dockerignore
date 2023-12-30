@@ -1,0 +1,10 @@
+node_modules
+dist
+**/node_modules
+**/dist
+.git
+.yarn
+.dockerignore
+docker-compose.yml
+Dockerfile
+.vscode

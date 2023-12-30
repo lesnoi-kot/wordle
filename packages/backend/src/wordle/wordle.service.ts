@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import {
   CheckWordDTO,
+  NewGameDTO,
   GameId,
   LettersMatches,
   MatchType,
@@ -23,7 +24,7 @@ export class WordleService {
     private wordsCountRepo: Repository<WordsCountEntity>,
   ) {}
 
-  async newGame() {
+  async newGame(): Promise<NewGameDTO> {
     const { count } = await this.wordsCountRepo.findOneByOrFail({});
 
     const wordId = Math.floor(Math.random() * count);

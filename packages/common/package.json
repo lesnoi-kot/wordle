@@ -2,8 +2,6 @@
   "name": "wordle-common",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
-  "packageManager": "yarn@4.0.0",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",

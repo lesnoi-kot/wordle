@@ -42,7 +42,7 @@ export const useGameState = () => {
         setGameId(gameId);
       })
       .catch((error) => {
-        addToast({ text: `Ошибка сети (${String(error)})` });
+        addToast({ text: `Ошибка сети (${error})` });
       });
   }, [addToast]);
 
