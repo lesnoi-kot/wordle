@@ -3,9 +3,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import {
-  CheckWordDTO,
-  NewGameDTO,
   GameId,
+  CheckWordDTO,
   LettersMatches,
   MatchType,
   WORDS_COUNT,
@@ -24,57 +23,58 @@ export class WordleService {
     private wordsCountRepo: Repository<WordsCountEntity>,
   ) {}
 
-  async newGame(): Promise<NewGameDTO> {
+  async newGame(): Promise<GameId> {
     const { count } = await this.wordsCountRepo.findOneByOrFail({});
-
     const wordId = Math.floor(Math.random() * count);
     const game = await this.gamesRepo.save(this.gamesRepo.create({ wordId }));
-
-    return { gameId: game.id };
+    return game.id;
   }
 
   async checkWord(gameId: GameId, guessWord: string): Promise<CheckWordDTO> {
-    if (!(await this.doesWordExist(guessWord))) {
-      return { isValid: false };
-    }
-
-    await this.gamesRepo.increment({ id: gameId }, "attempts", 1);
+    await this.gamesRepo.increment(
+      { id: gameId, isFinished: false },
+      "attempts",
+      1,
+    );
     const game = await this.gamesRepo.findOneBy({ id: gameId });
-
     if (!game) {
       return { isValid: false };
     }
 
     const { word: secretWord } = await game.word;
-
-    if (secretWord.length !== guessWord.length) {
-      return { isValid: false };
-    }
-
     const matches = compareWords(guessWord, secretWord);
+    const isSolved = isWordFullyMatched(matches);
 
-    if (game.attempts >= WORDS_COUNT || isWordFullyMatched(matches)) {
-      return {
-        isValid: true,
-        matches,
-        finished: true,
-        word: secretWord,
-        attempts: game.attempts,
-      };
+    if (!game.isFinished && (isSolved || game.attempts >= WORDS_COUNT)) {
+      game.isFinished = true;
+      await this.gamesRepo.update({ id: game.id }, { isFinished: true });
     }
 
-    return { isValid: true, matches, finished: false };
+    return {
+      isValid: true,
+      matches,
+      isFinished: game.isFinished,
+      word: secretWord,
+      attempts: game.attempts,
+    };
   }
 
   // Finish a game and reveal secret word.
-  async revealWord(gameId: GameId) {
-    await this.gamesRepo.update({ id: gameId }, { attempts: WORDS_COUNT });
-    const game = await this.gamesRepo.findOneByOrFail({ id: gameId });
-    const { word } = await game.word;
-    return { word };
+  async revealWord(gameId: GameId): Promise<string | null> {
+    const game = await this.gamesRepo.findOneBy({ id: gameId });
+    if (!game) {
+      return null;
+    }
+
+    game.isFinished = true;
+    await this.gamesRepo.update(
+      { id: game.id, isFinished: false },
+      { isFinished: true, attempts: WORDS_COUNT },
+    );
+    return (await game.word).word;
   }
 
-  private async doesWordExist(word: string): Promise<boolean> {
+  async doesWordExist(word: string): Promise<boolean> {
     return this.wordsRepo.exist({ where: { word } });
   }
 }
@@ -85,6 +85,10 @@ function isWordFullyMatched(matches: LettersMatches): boolean {
 
 function compareWords(guessWord: string, secretWord: string): LettersMatches {
   const matches = Array(WORD_LENGTH).fill(MatchType.None) as LettersMatches;
+
+  if (secretWord.length !== guessWord.length) {
+    return matches;
+  }
 
   for (let i = 0; i < secretWord.length; ++i) {
     if (secretWord[i] === guessWord[i]) {

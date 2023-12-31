@@ -19,6 +19,9 @@ export class GameEntity {
   @Column({ default: 0 })
   attempts: number;
 
+  @Column({ name: "is_finished", default: false })
+  isFinished: boolean;
+
   @OneToOne((type) => WordEntity)
   @JoinColumn({ name: "word_id" })
   word: Promise<WordEntity>;

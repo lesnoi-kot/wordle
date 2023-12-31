@@ -6,5 +6,6 @@ CREATE TABLE words (
 CREATE TABLE games (
   id int PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   word_id int REFERENCES words(id) ON DELETE CASCADE,
+  is_finished boolean NOT NULL DEFAULT FALSE,
   attempts int NOT NULL DEFAULT 0
 );

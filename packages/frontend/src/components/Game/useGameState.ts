@@ -79,7 +79,7 @@ export const useGameState = () => {
           .concat({ word: "" }),
       );
 
-      if (checkResult.finished) {
+      if (checkResult.isFinished) {
         setAttempts(checkResult.attempts);
         setIsFinished(true);
         setCorrectWord(checkResult.word);

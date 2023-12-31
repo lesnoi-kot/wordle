@@ -12,10 +12,12 @@ export type LettersMatches = [
 ];
 
 export type CheckWordDTO =
+  // Guess is invalid and not counts as an attempt.
   | { isValid: false }
-  | ({ isValid: true; matches: LettersMatches } & (
-      | { finished: true; word: string; attempts: number }
-      | { finished: false }
+  // Attempt is valid. When game finishes, secret word will be revealed.
+  | ({ isValid: true; matches: LettersMatches; attempts: number } & (
+      | { isFinished: true; word: string }
+      | { isFinished: false }
     ));
 
 export type NewGameDTO = {
