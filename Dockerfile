@@ -8,14 +8,15 @@ FROM --platform=$TARGETPLATFORM node:${NODE_VERSION} as workspace-builder
 WORKDIR /builder
 COPY yarn.lock package.json tsconfig.json .yarnrc.yml ./
 COPY packages/common ./packages/common/
-RUN corepack enable && yarn plugin import workspace-tools && \
+RUN --mount=type=cache,target=/builder/.yarn/cache corepack enable && \
+  yarn plugin import workspace-tools && \
   yarn workspaces focus wordle-common && \
   yarn workspace wordle-common common:build:all
 
 # Backend package
 FROM --platform=$TARGETPLATFORM workspace-builder as backend-builder
 COPY packages/backend/package.json ./packages/backend/
-RUN yarn workspaces focus wordle-backend
+RUN --mount=type=cache,target=/builder/.yarn/cache yarn workspaces focus wordle-backend
 COPY packages/backend/ ./packages/backend/
 RUN yarn workspace wordle-backend build
 
@@ -33,7 +34,7 @@ CMD [ "node", "main" ]
 # Frontend package
 FROM --platform=$TARGETPLATFORM workspace-builder as frontend-builder
 COPY packages/frontend/package.json ./packages/frontend/
-RUN yarn workspaces focus wordle-frontend
+RUN --mount=type=cache,target=/builder/.yarn/cache yarn workspaces focus wordle-frontend
 COPY packages/frontend/ ./packages/frontend/
 RUN yarn workspace wordle-frontend build
 
