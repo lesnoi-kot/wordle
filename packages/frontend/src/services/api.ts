@@ -21,13 +21,13 @@ class API {
   }
 
   async getRandomWordHandle(): Promise<NewGameDTO> {
-    const url = new URL("/words/random", this.baseUrl);
+    const url = new URL("words/random", this.baseUrl);
     const resp = await fetch(url);
     return (await resp.json()) as NewGameDTO;
   }
 
   async checkWord(options: CheckWordOptions): Promise<CheckWordDTO> {
-    const url = new URL("/words/check", this.baseUrl);
+    const url = new URL("words/check", this.baseUrl);
     url.searchParams.append("gameId", String(options.gameId));
     url.searchParams.append("word", options.guessWord);
 
@@ -37,7 +37,7 @@ class API {
   }
 
   async revealWord(options: RevealWordOptions): Promise<RevealWordDTO> {
-    const url = new URL("/words/reveal", this.baseUrl);
+    const url = new URL("words/reveal", this.baseUrl);
     url.searchParams.append("gameId", String(options.gameId));
 
     const resp = await fetch(url, { method: "POST" });
@@ -47,5 +47,5 @@ class API {
 }
 
 export const api = new API({
-  baseUrl: import.meta.env.VITE_API_URL || document.location.origin,
+  baseUrl: import.meta.env.VITE_API_URL || `${document.location.origin}/api/`,
 });

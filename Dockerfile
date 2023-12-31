@@ -1,6 +1,6 @@
 ARG NODE_VERSION="21-alpine"
 
-FROM --platform=$TARGETPLATFORM postgres:16 as db
+FROM --platform=$TARGETPLATFORM postgres:16-alpine as db
 COPY packages/backend/scripts/initdb /docker-entrypoint-initdb.d/
 
 # Prepare the workspace and the common package
@@ -33,7 +33,7 @@ CMD [ "node", "main" ]
 # Frontend package
 FROM --platform=$TARGETPLATFORM workspace-builder as frontend-builder
 COPY packages/frontend/package.json ./packages/frontend/
-RUN corepack enable && yarn workspaces focus wordle-frontend
+RUN yarn workspaces focus wordle-frontend
 COPY packages/frontend/ ./packages/frontend/
 RUN yarn workspace wordle-frontend build
 
