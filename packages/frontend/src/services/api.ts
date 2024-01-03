@@ -21,14 +21,14 @@ class API {
     this.baseUrl = baseUrl;
   }
 
-  async getRandomWordHandle(): Promise<NewGameDTO> {
+  async newGame(): Promise<NewGameDTO> {
     const url = new URL("games/new", this.baseUrl);
     const resp = await fetch(url, { method: "POST" });
     await this.throwForStatus(resp);
     return (await resp.json()) as NewGameDTO;
   }
 
-  async checkWord(options: CheckWordOptions): Promise<CheckWordDTO> {
+  async guessWord(options: CheckWordOptions): Promise<CheckWordDTO> {
     const url = new URL("games/guess", this.baseUrl);
     url.searchParams.append("gameId", String(options.gameId));
     url.searchParams.append("word", options.guessWord);

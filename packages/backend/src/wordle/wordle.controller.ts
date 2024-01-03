@@ -1,9 +1,10 @@
 import {
   Controller,
-  Post,
-  Query,
+  HttpCode,
   NotFoundException,
   ParseIntPipe,
+  Post,
+  Query,
 } from "@nestjs/common";
 
 import {
@@ -20,11 +21,12 @@ export class WordleController {
   constructor(private readonly appService: WordleService) {}
 
   @Post("/new")
-  async getRandomWordHandle(): Promise<NewGameDTO> {
+  async newGame(): Promise<NewGameDTO> {
     const gameId = await this.appService.newGame();
     return { gameId };
   }
 
+  @HttpCode(200)
   @Post("/guess")
   async checkWord(
     @Query("gameId") gameId: number,
@@ -62,6 +64,7 @@ export class WordleController {
     };
   }
 
+  @HttpCode(200)
   @Post("/reveal")
   async revealWord(
     @Query("gameId", ParseIntPipe) gameId: number,

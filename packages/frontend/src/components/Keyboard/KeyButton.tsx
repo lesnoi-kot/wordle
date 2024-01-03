@@ -1,5 +1,7 @@
+import { useRef } from "react";
 import clsx from "clsx";
 import { MatchType } from "wordle-common";
+import { getKeyButtonId } from "./common";
 
 type Props = {
   char: string;
@@ -15,6 +17,7 @@ const matchTypeToColor = {
 };
 
 export function KeyButton({ char, match, onClick, className }: Props) {
+  const ref = useRef<HTMLButtonElement>(null);
   const content =
     char === "\b" ? <BackspaceIcon /> : char === "\n" ? "enter" : char;
 
@@ -32,8 +35,10 @@ export function KeyButton({ char, match, onClick, className }: Props) {
 
   return (
     <button
+      ref={ref}
+      id={getKeyButtonId(char)}
       className={clsx(
-        "w-full select-none rounded p-1 transition-colors xs:p-2 sm:p-3 md:p-4",
+        "w-full origin-center select-none rounded p-1 transition-colors xs:p-2 sm:p-3 md:p-4",
         textStyling,
         bgStyling,
         className,
@@ -41,6 +46,10 @@ export function KeyButton({ char, match, onClick, className }: Props) {
       onClick={() => {
         onClick(char);
       }}
+      onKeyDown={(event) => {
+        event.preventDefault();
+      }}
+      tabIndex={-1}
     >
       {content}
     </button>

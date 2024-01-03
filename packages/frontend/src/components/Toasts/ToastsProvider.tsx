@@ -24,21 +24,29 @@ type ToastsContextState = {
 
 const ToastsContext = createContext<ToastsContextState | null>(null);
 
-const TOAST_TTL = 5000;
+const DEFAULT_TOAST_TTL = 5000;
 
 export function ToastsProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((toast: AddToastOptions) => {
-    setTimeout(() => {
-      setToasts(([_, ...toasts]) => toasts);
-    }, toast.ttl ?? TOAST_TTL);
+  const removeToast = useCallback((toastId: string) => {
+    document
+      .getElementById(`Toasts-${toastId}`)
+      ?.classList.add("animate-jump-out", "animate-duration-200");
 
-    setToasts((toasts) => toasts.concat({ ...toast, id: nanoid() }));
+    setTimeout(() => {
+      setToasts((toasts) => toasts.filter((toast) => toast.id !== toastId));
+    }, 200);
   }, []);
 
-  const removeToast = useCallback((toastId: string) => {
-    setToasts((toasts) => toasts.filter((toast) => toast.id !== toastId));
+  const addToast = useCallback((toastOptions: AddToastOptions) => {
+    const toast: Toast = { ...toastOptions, id: nanoid() };
+
+    setTimeout(() => {
+      removeToast(toast.id);
+    }, toast.ttl ?? DEFAULT_TOAST_TTL);
+
+    setToasts((toasts) => toasts.concat(toast));
   }, []);
 
   const value = useMemo(

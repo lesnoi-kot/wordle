@@ -9,6 +9,7 @@ export function Toasts() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
+          id={`Toasts-${toast.id}`}
           onClick={() => {
             removeToast(toast.id);
           }}

@@ -37,12 +37,12 @@ export const useGameState = () => {
 
   const startNewGame = useCallback(() => {
     api
-      .getRandomWordHandle()
+      .newGame()
       .then(({ gameId }) => {
         setGameId(gameId);
       })
       .catch((error) => {
-        addToast({ text: `Ошибка сети (${error})` });
+        addToast({ text: `Неожиданная ошибка: (${error})` });
       });
   }, [addToast]);
 
