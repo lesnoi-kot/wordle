@@ -4,11 +4,9 @@ import { GameState } from "./useGameState";
 import { Button } from "../Button/Button";
 import { useAddToast } from "../Toasts/ToastsProvider";
 
-export function Header({
-  gameId,
-  isFinished,
-  onWordReveal,
-}: Pick<GameState, "gameId" | "isFinished" | "onWordReveal">) {
+type Props = Pick<GameState, "gameId" | "isFinished" | "onWordReveal">;
+
+export function Header({ gameId, isFinished, onWordReveal }: Props) {
   const addToast = useAddToast();
 
   return (
@@ -18,15 +16,18 @@ export function Header({
       <Button
         className="ml-auto"
         primary
-        disabled={isFinished}
         onClick={() => {
+          if (isFinished) {
+            return;
+          }
+
           api
             .revealWord({ gameId })
             .then(({ word }) => {
               onWordReveal(word);
             })
             .catch((error) => {
-              addToast({ text: `Ошибка сети (${String(error)})` });
+              addToast({ text: `Неожиданная ошибка: (${error})` });
             });
         }}
       >

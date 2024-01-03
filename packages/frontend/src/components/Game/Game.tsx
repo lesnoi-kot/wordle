@@ -8,6 +8,7 @@ import { shakeElement } from "./animations";
 import { NO_MATCHES_INFO, useGameState } from "./useGameState";
 
 import { Keyboard } from "../Keyboard/Keyboard";
+import { animateKeyButton } from "../Keyboard/animations";
 import { Word } from "../Word/Word";
 import { useAddToast } from "../Toasts/ToastsProvider";
 import { CongratsDialog } from "./CongratsDialog";
@@ -44,6 +45,8 @@ export function Game() {
         return;
       }
 
+      animateKeyButton(letter);
+
       switch (letter) {
         case "\n":
           if (!rowIsFilled) {
@@ -53,7 +56,7 @@ export function Game() {
           }
 
           api
-            .checkWord({ gameId, guessWord: currentWord })
+            .guessWord({ gameId, guessWord: currentWord })
             .then((result) => {
               if (result.isValid) {
                 onWordAccepted(currentWord, result);
@@ -63,7 +66,7 @@ export function Game() {
               }
             })
             .catch((error) => {
-              addToast({ text: `Ошибка сети (${String(error)})` });
+              addToast({ text: `Неожиданная ошибка: (${error})` });
             });
           break;
 
