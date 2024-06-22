@@ -5,11 +5,14 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "yarn run backend:build && yarn run frontend:build && mv ./packages/backend/dist ./dist && mv ./packages/frontend/client ./dist/client",
     "frontend:dev": "yarn workspace wordle-frontend dev",
+    "frontend:build": "yarn workspace wordle-frontend build",
     "backend:build": "yarn workspace wordle-backend build",
     "backend:dev": "yarn workspace wordle-backend start:dev",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"**/*.{js,ts,tsx}\""
+    "format": "prettier --write \"**/*.{js,ts,tsx}\"",
+    "clean": "echo TODO && exit 1"
   },
   "dependencies": {
     "typescript": "^5.2.2"

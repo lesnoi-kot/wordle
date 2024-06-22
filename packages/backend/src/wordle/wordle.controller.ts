@@ -16,7 +16,7 @@ import {
 
 import { WordleService } from "./wordle.service.js";
 
-@Controller("/games")
+@Controller("/api/games")
 export class WordleController {
   constructor(private readonly appService: WordleService) {}
 
