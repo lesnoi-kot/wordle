@@ -1,28 +1,10 @@
-version: '3.8'
 name: wordle
 
 services:
-  db:
-    image: wordle-db:${RELEASE_TAG:-local}
-    build:
-      target: db
-    restart: unless-stopped
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_PASSWORD=wordle
-      - POSTGRES_USER=wordle
-
   backend:
     image: wordle-backend:${RELEASE_TAG:-local}
     build:
       target: backend
-    environment:
-      - DATABASE_DSN=postgresql://wordle:wordle@db/wordle?application_name=wordle
-    depends_on:
-      - db
     ports:
       - 3000:3000
 
@@ -36,6 +18,3 @@ services:
       - 5173:80
     environment:
       - VITE_API_URL=http://backend:3000/
-
-volumes:
-  db-data:
